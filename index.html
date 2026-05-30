@@ -150,7 +150,7 @@ canvas { max-width:100%; }
 
 <div class="hero">
   <h1>寻找下一个英伟达</h1>
-  <p class="sub">从 $17.7B 到 $5.2T — Nvidia 十年市值演化的结构性基因，跨市场映射到美股+A/H 18只候选人</p>
+  <p class="sub">从 $17.7B 到 $5.2T — Nvidia 十年市值演化的结构性基因，跨市场映射到美股+A/H 19只候选人</p>
   <p class="disclaimer">⚠️ 本研究仅为框架分析，不构成投资建议。所有数据基于公开信息截至 2026-05-30。</p>
 </div>
 
@@ -272,7 +272,7 @@ canvas { max-width:100%; }
 <div class="card">
   <h2><span class="icon">⚡</span> 碰撞分析：A/H 候选 vs Nvidia DNA 框架</h2>
   <p style="color:var(--text2);margin-bottom:16px;">
-    将8只A/H股候选纳入全量池(共18只)，从四支柱角度做交叉碰撞。关键发现：A/H候选在<b>瓶颈位置</b>和<b>估值裂缝</b>两个维度上与美股候选形成互补——但<b>平台性</b>普遍较弱。
+    将8只A/H股候选纳入全量池(共19只)，从四支柱角度做交叉碰撞。关键发现：A/H候选在<b>瓶颈位置</b>和<b>估值裂缝</b>两个维度上与美股候选形成互补——但<b>平台性</b>普遍较弱。
   </p>
 
   <h3>🔬 碰撞一：瓶颈位置的"地理套利"</h3>
@@ -291,7 +291,7 @@ canvas { max-width:100%; }
   <div class="insight-row">
     <div class="insight-card">
       <div class="insight-title"><span class="tag tag-bull">发现</span> 思摩尔：最深的裂缝</div>
-      <p>全量18只候选池中，<b>思摩尔国际($8B, 3个月-21%)</b>的"估值裂缝"最深——市场正在用"监管恐惧"定价一个全球#1的技术公司。对比美股候选：AEHR($2B)虽有低估但市值太小流动性差；CRDO($12B)已开始被市场重定价。思摩尔的"估值裂缝"与"技术主导地位"的剪刀差，是整个候选池中最大的单一错误定价机会。<b>但这需要验证"监管在利好龙头方向演进"这一核心前提。</b></p>
+      <p>全量19只候选池中，<b>思摩尔国际($8B, 3个月-21%)</b>的"估值裂缝"最深——市场正在用"监管恐惧"定价一个全球#1的技术公司。对比美股候选：AEHR($2B)虽有低估但市值太小流动性差；CRDO($12B)已开始被市场重定价。思摩尔的"估值裂缝"与"技术主导地位"的剪刀差，是整个候选池中最大的单一错误定价机会。<b>但这需要验证"监管在利好龙头方向演进"这一核心前提。</b></p>
     </div>
     <div class="insight-card">
       <div class="insight-title"><span class="tag tag-bear">风险</span> 裂缝≠机会——需区分"被误解"和"被合理低估"</div>
@@ -330,12 +330,72 @@ canvas { max-width:100%; }
   </p>
 </div>
 
+<!-- Two-Razor Screening -->
+<div class="card" id="razorCard">
+  <h2><span class="icon">🔪</span> 两刀筛选：从 19 只到精华池</h2>
+  <p style="color:var(--text2);margin-bottom:16px;">
+    借鉴段永平"对的生意+对的人+对的价格"三关框架，提取两道最硬门槛对候选池做手术式切割。双击筛选下的每道刀都有独立的反方论证——<b>不是砍掉好公司，是砍掉"不能成为下一个Nvidia"的公司</b>。
+  </p>
+
+  <div class="toggle-group" id="razorToggle" style="margin-bottom:20px;">
+    <button class="toggle-btn active" onclick="applyRazor('all')">全量池 (19只)</button>
+    <button class="toggle-btn" onclick="applyRazor('r1')">🔪 第一刀：起点过高</button>
+    <button class="toggle-btn" onclick="applyRazor('r2')">🔪 第二刀：瓶颈不刚</button>
+    <button class="toggle-btn" onclick="applyRazor('both')">🔪🔪 双刀过关</button>
+  </div>
+
+  <h3>🔪 第一刀：市值≤$25B — "如果你起点已是巨兽，不可能跑300×"</h3>
+  <div class="insight-row">
+    <div class="insight-card">
+      <div class="insight-title"><span class="tag tag-bull">逻辑</span></div>
+      <p>Nvidia 2015年底市值$17.7B。若候选起点$100B+，即使跑出Nvidia同等倍率也需要变成$30T——超过美国GDP。这不是"能不能成为好投资"的问题，是<b>数学上能否复现300×的问题</b>。一刀砍掉起点$25B以上的候选。</p>
+    </div>
+    <div class="insight-card">
+      <div class="insight-title"><span class="tag tag-bear">砍掉的</span></div>
+      <p>PLTR($250B) · CRWD($100B) · AXON($50B) · VRT($45B) · 澜起科技($43B) · ASMIY($35B) · MiniMax($33B)<br><span style="color:var(--warn);font-size:12px;">这些仍是好公司——但起点决定了它们不可能300×。</span></p>
+    </div>
+  </div>
+
+  <h3>🔪 第二刀：物理瓶颈刚性 — "不是政策保的，是物理锁死的"</h3>
+  <div class="insight-row">
+    <div class="insight-card">
+      <div class="insight-title"><span class="tag tag-bull">逻辑</span></div>
+      <p>Nvidia的核心不是"GPU卖得好"，是<b>占据了一个物理上无法绕过的瓶颈位置</b>——无论谁做AI都必须用它的芯片。"政策保的"(EDA国产替代)、"品牌护城河"(消费电子)、"监管壁垒"(电子烟)都不算——它们可能在规则变更时消失。一刀砍掉非物理瓶颈的候选。</p>
+    </div>
+    <div class="insight-card">
+      <div class="insight-title"><span class="tag tag-bear">砍掉的</span></div>
+      <p>安克创新(品牌,非物理) · 金山办公(软件,可替换) · 思摩尔国际(监管护城河,非物理) · 华大九天(政策瓶颈,非物理刚性) · 宇树科技(制度红利>技术壁垒)<br><span style="color:var(--warn);font-size:12px;">宇树特例详见下方独立分析。</span></p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:20px;">✅ 双刀过关（7只精华池）</h3>
+  <p style="color:var(--text2);font-size:14px;">以下候选同时满足：起点≤$25B + 占据物理上不可绕过的瓶颈位置。</p>
+  <div id="razorSurvivors" style="margin-top:12px;"></div>
+
+  <h3 style="margin-top:24px;">⚠️ 宇树科技：两刀下的特例分析</h3>
+  <div style="background:var(--surface2);border:1px solid var(--warn);border-radius:12px;padding:20px;margin-top:12px;">
+    <p style="font-size:14px;color:var(--text2);line-height:1.8;">
+      <b style="color:var(--warn);">宇树在第一刀存活($6B起点)但在第二刀被砍。</b>独立深度报告<a href="https://www.feishu.cn/docx/Ar4pdc5dqo5erOxmTeRc7JoDn1g" style="color:var(--accent);" target="_blank">📄 宇树科技深度分析</a>揭示了三个致命问题：<br><br>
+      <b>1. 收入根基是制度套利，不是市场需求。</b>73.6%人形机器人收入来自高校科研采购——这不是"卖得好"，是科研经费年底必须花完的制度漏洞。真正工业部署收入不到人形总收入的1%。<br><br>
+      <b>2. 研发费率从31.39%骤降至7.73%。</b>一家被定位为"技术领袖"的公司，研发费率不足科创板的50%——增量收入变成了利润做IPO估值，而不是技术壁垒。这和Nvidia在2016年寒冬期坚持20%+研发费率的做法完全相反。<br><br>
+      <b>3. 华为CloudRobo正在形成降维打击。</b>盘古大模型+昇腾芯片+赛力斯10万台产能+鸿蒙生态——宇树要么加入华为生态(沦为OEM)，要么被压制。宇树¥420亿IPO估值建立在"独立平台"假设上，而华为让这个假设松动。<br><br>
+      <b>综合判断：</b>宇树的真本事在机器狗(四足)——电网巡检/石化巡检有真商业价值——但这不是"人形机器人平台"的故事。合理估值¥100-150亿(对标准Boston Dynamics/SICK/传音)，IPO估值¥420亿买的是四个"同时成立"的奇迹。
+    </p>
+  </div>
+
+  <h3 style="margin-top:20px;">🧪 双刀框架 thesis-check</h3>
+  <p style="color:var(--text2);font-size:14px;">
+    <b>证据 🟢</b> — 市值数据和瓶颈分析可交叉验证 | <b>原创性 🟢</b> — 两刀框架为"段永平三关→投资筛选"的原创翻译 | <b>时效性 🟢</b> — 宇树IPO在即、绿的谐波人形机器人TAM爆发窗口 | <b>反方 🟢</b> — 每道刀配独立反方论证，宇树深度报告提供天敌级反方<br>
+    🧪 thesis-check: <b style="color:var(--nvda)">4/4</b> — 四个支柱全部通过。
+  </p>
+</div>
+
 <!-- Methodology -->
 <div class="card" style="opacity:0.8;">
   <h2><span class="icon">⚙️</span> 方法论说明</h2>
   <p style="color:var(--text2);font-size:13px;line-height:1.8;">
     <b>Nvidia DNA 7 维度框架</b> 基于对 Nvidia 2015-2025 十年演化的反向工程，非归纳法拟合。<br>
-    <b>候选池</b>：筛选全球市值 <$50B、在半导体/AI/机器人价值链中处于瓶颈位置的上市公司，再排除纯概念/无盈利/无护城河的公司。本版扩展至<b>美股+A/H股共18只候选</b>——A/H候选提供了"中国自主供应链瓶颈"和"更深估值裂缝"两个美股候选池不具备的维度。<br>
+    <b>候选池</b>：筛选全球市值 <$50B、在半导体/AI/机器人价值链中处于瓶颈位置的上市公司，再排除纯概念/无盈利/无护城河的公司。本版扩展至<b>美股+A/H股共19只候选</b>——A/H候选提供了"中国自主供应链瓶颈"和"更深估值裂缝"两个美股候选池不具备的维度。<br>
     <b>评分</b>：每个维度 1-5 星，基于公开信息和行业分析，非量化模型。权重：瓶颈位置 (25%) > TAM 扩展潜力 (20%) > 护城河 (20%) > 平台性 (15%) > 起点低估 (10%) > 创始人 (5%) > R&D 强度 (5%)。<br>
     <b>核心局限</b>：(1) 历史不重复——Nvidia 的结构性条件可能不可复制；(2) 市值 $17.7B 区间与当前市场环境不同；(3) 创始人质量无法量化，但可能是最决定性的变量。<br>
     <b>⚠️ 这不是选股建议</b>——这是结构性基因分析。每个候选人都有独立的熊市论点，请独立研究。
@@ -463,9 +523,10 @@ const candidates = [
   },
   {
     ticker:'IPO-YUSH', name:'宇树科技 (2026 IPO)', mcap:6, sector:'人形机器人', market:'🇨🇳',
-    scores: { moat:3, tam:5, bottleneck:4, platform:3, undervalued:2, founder:4, rd:4 },
-    thesis: '人形机器人第一股——全球唯一实现盈利的通用人形机器人公司。若"2026=人形机器人的AlphaGo时刻"，宇树是最纯标的。四足+人形双产品线，$16K起售价碾压波士顿动力等。',
-    risk: '高度不确定——人形机器人何时真正落地无人知晓。盈利或来自低毛利硬件而非SaaS。IPO估值可能高企。竞争：Tesla Optimus/Figure AI/追觅等。',
+    scores: { moat:2, tam:5, bottleneck:3, platform:2, undervalued:1, founder:4, rd:2 },
+    thesis: '⚠️ 独立深度报告已出(详见碰撞分析)。真本事在机器狗(四足)，不在人形。73.6%人形收入来自高校科研(制度套利)。研发费率从31.39%骤降至7.73%——公司选择把增量收入变利润支撑IPO估值，而非变技术壁垒。机器狗在电网/石化巡检有真商业价值，但¥420亿IPO估值买的是"具身智能平台"故事，不是"硬件制造商"现实。',
+    risk: '核心风险不是技术是制度——60%+收入依赖科研经费管理漏洞。华为CloudRobo生态(盘古大模型+昇腾芯片+10万台产能)正在形成降维打击。关联交易脉冲+存货暴增+研发骤降三重财务红色信号。IPO估值隐含四个"同时成立"假设，全部满足概率极低。',
+    deepdive: 'https://www.feishu.cn/docx/Ar4pdc5dqo5erOxmTeRc7JoDn1g',
   },
   {
     ticker:'IPO-MINI', name:'MiniMax (2026 IPO)', mcap:33, sector:'大模型', market:'🇨🇳',
@@ -478,6 +539,12 @@ const candidates = [
     scores: { moat:4, tam:4, bottleneck:5, platform:4, undervalued:4, founder:3, rd:5 },
     thesis: '中国版Synopsys/Cadence——芯片设计的"操作系统"。EDA是半导体产业链最上游瓶颈：没有EDA，芯片设计归零。国产替代政策+AI辅助EDA(类比Copilot for chip design)打开新TAM。$7B vs Synopsys $90B → 10×裂口。',
     risk: '技术差距vs Synopsys/Cadence(20年积累)仍然巨大。追赶成功=巨大回报，失败=归零——典型"全押风险"。客户迁移成本极高(设计师习惯+IP生态锁死)。',
+  },
+  {
+    ticker:'688017', name:'绿的谐波', mcap:5, sector:'谐波减速器', market:'🇨🇳',
+    scores: { moat:4, tam:4, bottleneck:5, platform:2, undervalued:4, founder:3, rd:4 },
+    thesis: '机器人的"关节税"——每台工业/人形机器人的每个旋转关节需要1-3个谐波减速器。绿的谐波是国内唯一打破日本HD垄断的谐波减速器厂商(全球#2)，国产机器人替代日本减速器的趋势不可逆。$5B市值，若人形机器人爆发则每个机器人需要14-28个谐波减速器，TAM扩张倍数惊人。',
+    risk: '日本Harmonic Drive仍是全球霸主，技术差距存于精度和寿命。绿的谐波如果被机器人厂商自研减速器替代(如特斯拉可能自研)，护城河可能崩塌。人形机器人落地时间不确定性是最主要风险。',
   },
 ];
 
@@ -721,12 +788,86 @@ function updateRadarSelection(ticker) {
 function renderRadarToggle() {
   const container = document.getElementById('radarToggle');
   const sorted = [...candidates].sort((a,b) => calcOverall(b.scores) - calcOverall(a.scores));
-  container.innerHTML = sorted.slice(0,18).map(c => {
+  container.innerHTML = sorted.slice(0,19).map(c => {
     const active = selectedCandidates.includes(c.ticker);
     return `<button class="toggle-btn ${active ? 'active' : ''}"
       style="font-size:12px;padding:6px 14px;"
       onclick="updateRadarSelection('${c.ticker}')">${c.ticker}</button>`;
   }).join('');
+}
+
+// ─── Two-Razor Filter ───
+// Razor 1: 市值 ≤ $25B (起点门槛)
+function razor1Pass(c) { return c.mcap <= 25; }
+// Razor 2: 物理瓶颈刚性 (硬瓶颈 — bottleneck >= 4 且 不是政策/品牌/监管护城河)
+function razor2Pass(c) {
+  // 硬瓶颈定义：bottleneck评分≥4 且 非政策/品牌/监管类
+  const softBottleneckTickers = ['300866','688111','6969.HK','301269','IPO-YUSH']; // 安克/金山/思摩尔/华大/宇树
+  return c.scores.bottleneck >= 4 && !softBottleneckTickers.includes(c.ticker);
+}
+
+function getSurvivorTickers(razor) {
+  return candidates.filter(c => {
+    if (razor === 'all') return true;
+    if (razor === 'r1') return razor1Pass(c);
+    if (razor === 'r2') return razor2Pass(c);
+    if (razor === 'both') return razor1Pass(c) && razor2Pass(c);
+    return true;
+  }).map(c => c.ticker);
+}
+
+function applyRazor(razor) {
+  // Update toggle buttons
+  document.querySelectorAll('#razorToggle .toggle-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#razorToggle .toggle-btn').forEach(b => {
+    if ((razor==='all' && b.textContent.includes('全量')) ||
+        (razor==='r1' && b.textContent.includes('第一刀')) ||
+        (razor==='r2' && b.textContent.includes('第二刀')) ||
+        (razor==='both' && b.textContent.includes('双刀'))) {
+      b.classList.add('active');
+    }
+  });
+
+  const survivors = getSurvivorTickers(razor);
+  const sorted = [...candidates].sort((a,b) => calcOverall(b.scores) - calcOverall(a.scores));
+  const tbody = document.getElementById('candidateBody');
+  const star = n => '★'.repeat(n) + '☆'.repeat(5-n);
+  
+  tbody.innerHTML = sorted.map((c,i) => {
+    const alive = survivors.includes(c.ticker);
+    const oa = calcOverall(c.scores);
+    const style = alive ? '' : 'opacity:0.35;text-decoration:line-through;text-decoration-thickness:1px;';
+    return `
+    <tr data-idx="${i}" onclick="selectCandidate(${i})" id="crow-${i}" style="${style}">
+      <td class="ticker"><span style="font-size:12px;margin-right:2px">${c.market||''}</span>${c.ticker}</td>
+      <td class="name">${c.name}${!alive?' ⛔':''}</td>
+      <td class="mcap">$${c.mcap}B</td>
+      <td>${c.sector}</td>
+      <td class="score"><span style="font-weight:700;color:var(--nvda)">${oa}%</span><div class="score-bar"><div class="score-bar-inner" style="width:${oa}%"></div></div></td>
+      <td class="stars">${star(c.scores.moat)}</td>
+      <td class="stars">${star(c.scores.tam)}</td>
+      <td class="stars">${star(c.scores.bottleneck)}</td>
+      <td class="stars">${star(c.scores.platform)}</td>
+    </tr>`;
+  }).join('');
+
+  // Update survivor list in the card
+  const survivorNames = survivors.map(t => {
+    const c = candidates.find(x => x.ticker === t);
+    return c ? `${c.market||''} <b>${c.name}</b> ($${c.mcap}B, ${c.sector})` : t;
+  });
+  const div = document.getElementById('razorSurvivors');
+  if (div) {
+    if (razor === 'all') {
+      div.innerHTML = '<p style="color:var(--text2);font-size:13px;">选择上方剃刀按钮应用筛选。</p>';
+    } else {
+      div.innerHTML = `<div style="display:flex;flex-wrap:wrap;gap:8px;">${survivorNames.map(n => `<span style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:13px;">${n}</span>`).join('')}</div>` +
+        `<p style="margin-top:8px;font-size:12px;color:var(--text2);">${survivors.length}只候选${razor==='both'?'通过两道刀':(razor==='r1'?'通过第一刀(起点≤$25B)':'通过第二刀(硬瓶颈)')}</p>`;
+    }
+  }
+
+  // Also update main candidate table toggle
+  document.querySelectorAll('#candidateTableToggle .toggle-btn').forEach(b => b.classList.remove('active'));
 }
 
 // ─── Init ───
