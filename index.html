@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>寻找下一个英伟达 — 十年市值碰撞交互式分析</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #13131a;
+  --surface2: #1a1a24;
+  --border: #2a2a3a;
+  --text: #e0e0e8;
+  --text2: #9090a8;
+  --nvda: #76b900;
+  --nvda2: #5a8f00;
+  --accent: #00d4ff;
+  --warn: #ff6b6b;
+  --gold: #f0c040;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; line-height:1.6; }
+canvas { max-width:100%; }
+
+/* Hero */
+.hero { text-align:center; padding:60px 24px 40px; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; top:0; left:0; right:0; bottom:0; background: radial-gradient(ellipse at 50% 0%, rgba(118,185,0,0.08) 0%, transparent 70%); pointer-events:none; }
+.hero h1 { font-size:clamp(28px,5vw,48px); font-weight:800; background: linear-gradient(135deg, var(--nvda) 0%, #a0e030 50%, var(--accent) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.hero .sub { color:var(--text2); font-size:18px; margin-top:8px; }
+.hero .disclaimer { color:var(--warn); font-size:12px; margin-top:16px; opacity:0.7; }
+
+/* Container */
+.container { max-width: 1200px; margin:0 auto; padding:0 24px; }
+
+/* Cards */
+.card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:24px; margin-bottom:24px; }
+.card h2 { font-size:22px; margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+.card h2 .icon { font-size:24px; }
+.card h3 { font-size:18px; color:var(--text2); margin-bottom:12px; }
+
+/* Stats grid */
+.stat-row { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:24px; }
+.stat-box { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:20px; text-align:center; }
+.stat-box .val { font-size:clamp(24px,5vw,32px); font-weight:800; color:var(--nvda); }
+.stat-box .label { font-size:clamp(11px,2vw,13px); color:var(--text2); margin-top:4px; }
+
+/* Chart area */
+.chart-wrap { position:relative; width:100%; max-width:100%; height:clamp(280px,50vw,420px); }
+.chart-wrap-sm { height:clamp(240px,40vw,320px); }
+
+/* Inflection points */
+.inflection-bar { display:flex; flex-wrap:wrap; gap:8px; margin:16px 0; }
+.inflection-dot { display:inline-flex; align-items:center; gap:6px; background:var(--surface2); border:1px solid var(--border); border-radius:20px; padding:6px 14px; font-size:13px; cursor:pointer; transition:all .2s; }
+.inflection-dot:hover, .inflection-dot.active { border-color:var(--nvda); background:rgba(118,185,0,0.1); }
+.inflection-dot .dot { width:8px; height:8px; border-radius:50%; }
+
+/* DNA radar area */
+.dna-grid { display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-top:16px; }
+@media(max-width:768px) { .dna-grid { grid-template-columns:1fr; } }
+
+/* Candidate table */
+.candidate-table { width:100%; border-collapse:collapse; margin-top:16px; font-size:clamp(11px,1.8vw,14px); }
+.candidate-table th { text-align:left; padding:8px 6px; border-bottom:2px solid var(--border); color:var(--text2); font-weight:600; font-size:clamp(10px,1.5vw,12px); text-transform:uppercase; letter-spacing:0.5px; white-space:nowrap; }
+.candidate-table td { padding:8px 6px; border-bottom:1px solid var(--border); white-space:nowrap; }
+.candidate-table tr { cursor:pointer; transition:background .15s; }
+.candidate-table tr:hover { background:var(--surface2); }
+.candidate-table tr.selected { background:rgba(118,185,0,0.08); border-left:3px solid var(--nvda); }
+.candidate-table .ticker { font-weight:700; color:var(--accent); font-family:'SF Mono', monospace; }
+.candidate-table .name { font-weight:600; }
+.candidate-table .mcap { text-align:right; font-variant-numeric:tabular-nums; }
+.candidate-table .score { text-align:center; }
+.stars { color:var(--nvda); letter-spacing:1px; }
+
+/* Score bar */
+.score-bar { height:6px; background:var(--border); border-radius:3px; overflow:hidden; min-width:80px; }
+.score-bar-inner { height:100%; border-radius:3px; background: linear-gradient(90deg, var(--nvda), var(--accent)); transition:width .5s; }
+
+/* Detail panel */
+.detail-panel { display:none; margin-top:16px; padding:20px; background:var(--surface2); border-radius:12px; border:1px solid var(--border); }
+.detail-panel.show { display:block; }
+.detail-panel .company-name { font-size:20px; font-weight:700; color:var(--accent); }
+.detail-panel .company-sector { color:var(--text2); font-size:14px; margin-bottom:12px; }
+.detail-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:12px; margin-top:12px; }
+.detail-item { background:var(--surface); border-radius:8px; padding:14px; }
+.detail-item .dim-label { font-size:11px; color:var(--text2); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
+.detail-item .dim-score { font-size:24px; font-weight:700; color:var(--gold); }
+
+/* Nvidia DNA legend */
+.dna-key { margin-top:16px; }
+.dna-key .dna-row { display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid var(--border); }
+.dna-key .dna-row:last-child { border-bottom:none; }
+.dna-num { width:28px; height:28px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0; }
+.dna-label { font-weight:600; min-width:120px; }
+.dna-desc { color:var(--text2); font-size:13px; flex:1; }
+
+/* Toggle */
+.toggle-group { display:flex; gap:4px; background:var(--surface2); border-radius:10px; padding:4px; margin-bottom:16px; width:fit-content; }
+.toggle-btn { padding:8px 18px; border-radius:8px; border:none; cursor:pointer; font-size:14px; background:transparent; color:var(--text2); transition:all .2s; }
+.toggle-btn.active { background:var(--nvda); color:#000; font-weight:600; }
+
+/* Tooltip */
+.tooltip-hint { font-size:12px; color:var(--text2); text-align:center; margin-top:8px; }
+
+/* Key insight cards */
+.insight-row { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
+.insight-card { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:clamp(14px,3vw,20px); }
+.insight-card .insight-title { font-weight:700; font-size:clamp(14px,2.5vw,16px); margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+.insight-card p { font-size:clamp(12px,2vw,14px); color:var(--text2); line-height:1.7; }
+.insight-card .tag { font-size:11px; padding:2px 8px; border-radius:10px; font-weight:600; }
+.tag-bull { background:rgba(118,185,0,0.2); color:var(--nvda); }
+.tag-bear { background:rgba(255,107,107,0.15); color:var(--warn); }
+
+/* Comparison mini chart */
+.comparison-section { margin-top:24px; }
+
+.footer { text-align:center; padding:40px 24px; color:var(--text2); font-size:13px; }
+.footer a { color:var(--nvda); }
+
+/* ── 响应式断点 ── */
+@media(max-width:600px) {
+  .hero { padding:40px 16px 24px; }
+  .hero .sub { font-size:15px; }
+  .container { padding:0 12px; }
+  .card { padding:16px; border-radius:12px; margin-bottom:16px; }
+  .card h2 { font-size:18px; }
+  .inflection-dot { font-size:11px; padding:4px 10px; }
+  .stat-row { grid-template-columns: repeat(2,1fr); gap:8px; }
+  .stat-box { padding:14px 10px; }
+  .dna-label { min-width:80px; font-size:13px; }
+  .dna-desc { font-size:12px; }
+  .detail-grid { grid-template-columns: repeat(2,1fr); }
+  .detail-item { padding:10px; }
+  .detail-item .dim-score { font-size:20px; }
+  .insight-card { padding:14px; }
+  .table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+}
+
+@media(min-width:601px) and (max-width:1024px) {
+  .stat-row { grid-template-columns: repeat(2,1fr); }
+  .table-wrap { overflow-x:auto; }
+}
+
+/* 候选表容器（带滚动） */
+.table-wrap { width:100%; overflow-x:auto; margin-top:16px; }
+.table-wrap table { margin-top:0; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>寻找下一个英伟达</h1>
+  <p class="sub">从 $17.7B 到 $5.2T — Nvidia 十年市值演化的结构性基因，映射到今天的候选人</p>
+  <p class="disclaimer">⚠️ 本研究仅为框架分析，不构成投资建议。所有数据基于公开信息截至 2026-05-30。</p>
+</div>
+
+<div class="container">
+
+<!-- Key Stats -->
+<div class="stat-row">
+  <div class="stat-box"><div class="val">~300×</div><div class="label">2015→2026 市值增长 <span style="font-size:10px;opacity:.6">(修正)</span></div></div>
+  <div class="stat-box"><div class="val">$17.7B</div><div class="label">2015 年底市值 <span style="font-size:10px;opacity:.6">(原$15B 已修正)</span></div></div>
+  <div class="stat-box"><div class="val">$5.2T</div><div class="label">当前市值 (全球 <strong style="color:var(--nvda)">#1</strong>)</div></div>
+  <div class="stat-box"><div class="val">42%</div><div class="label">10年 CAGR</div></div>
+</div>
+
+<!-- Nvidia Timeline Chart -->
+<div class="card">
+  <h2><span class="icon">📈</span> Nvidia 十年市值轨迹 <span style="font-weight:400;color:var(--text2);font-size:14px;">— 点击节点查看转折点</span></h2>
+  <div class="toggle-group" id="scaleToggle">
+    <button class="toggle-btn active" onclick="switchScale('log')">对数轴</button>
+    <button class="toggle-btn" onclick="switchScale('linear')">线性轴</button>
+  </div>
+  <div class="chart-wrap"><canvas id="nvdaChart"></canvas></div>
+  <div class="inflection-bar" id="inflectionBar"></div>
+  <div id="inflectionDetail" class="detail-panel"></div>
+</div>
+
+<!-- Nvidia DNA -->
+<div class="card">
+  <h2><span class="icon">🧬</span> Nvidia DNA：结构性基因拆解</h2>
+  <p style="color:var(--text2);margin-bottom:16px;">Nvidia 不是"赌对了AI"——它是用十年时间构建了一个不可复制的结构性优势矩阵。以下 7 条基因是评估"下一个 Nvidia"的基准。</p>
+  <div class="dna-key">
+    <div class="dna-row">
+      <div class="dna-num" style="background:rgba(118,185,0,0.2);color:var(--nvda)">1</div>
+      <div class="dna-label">护城河宽度</div>
+      <div class="dna-desc">CUDA 生态 + 开发者锁定 + 20年软件栈积累。竞争对手可以造芯片，但无法复制 400万+ CUDA 开发者网络效应。</div>
+    </div>
+    <div class="dna-row">
+      <div class="dna-num" style="background:rgba(0,212,255,0.15);color:var(--accent)">2</div>
+      <div class="dna-label">TAM 连续跳跃</div>
+      <div class="dna-desc">游戏GPU → 加密货币挖矿 → 数据中心/AI训练 → AI推理 → 自动驾驶 → 机器人/Omniverse。每次跳跃不蚕食原有市场。</div>
+    </div>
+    <div class="dna-row">
+      <div class="dna-num" style="background:rgba(240,192,64,0.15);color:var(--gold)">3</div>
+      <div class="dna-label">创始人领导的技术深度</div>
+      <div class="dna-desc">Jensen Huang 30年 CEO，工程师出身。技术判断力 = 超前投资 CUDA（2006）的远见，当时华尔街不理解。</div>
+    </div>
+    <div class="dna-row">
+      <div class="dna-num" style="background:rgba(118,185,0,0.2);color:var(--nvda)">4</div>
+      <div class="dna-label">瓶颈位置</div>
+      <div class="dna-desc">GPU 是 AI 训练的唯一入口。Nvidia 占据整个价值链最紧的物理瓶颈——无论谁做AI，都必须买它的芯片。</div>
+    </div>
+    <div class="dna-row">
+      <div class="dna-num" style="background:rgba(0,212,255,0.15);color:var(--accent)">5</div>
+      <div class="dna-label">平台＞产品</div>
+      <div class="dna-desc">CUDA 不是芯片——是计算平台。从硬件到框架到应用层，形成了类似 iOS/Windows 的开发者生态。</div>
+    </div>
+    <div class="dna-row">
+      <div class="dna-num" style="background:rgba(240,192,64,0.15);color:var(--gold)">6</div>
+      <div class="dna-label">R&D 强度</div>
+      <div class="dna-desc">研发费用占收入 20-30% 持续十年。不是裁研发过冬——是在寒冬加倍下注。</div>
+    </div>
+    <div class="dna-row">
+      <div class="dna-num" style="background:rgba(118,185,0,0.2);color:var(--nvda)">7</div>
+      <div class="dna-label">被低估的起点</div>
+      <div class="dna-desc">2015年被视为周期性半导体股（PE ~15-20x），没人把它当平台公司定价。估值重估贡献了至少一半的回报。</div>
+    </div>
+  </div>
+</div>
+
+<!-- Candidate Comparison -->
+<div class="card">
+  <h2><span class="icon">🔍</span> 候选人筛选：谁的结构性基因最接近 2015 年的 Nvidia？</h2>
+  <p style="color:var(--text2);margin-bottom:16px;">
+    筛选标准：市值 <$50B（接近 Nvidia 2015 起点）、在关键技术瓶颈处有不可替代性、具备平台化潜力和多 TAM 扩展空间。<br>
+    <span style="font-size:12px;">点击行查看详细对比。DNA 匹配度 = 7个维度的加权评分。</span>
+  </p>
+
+  <div class="table-wrap"><table class="candidate-table" id="candidateTable">
+    <thead>
+      <tr><th>代码</th><th>公司</th><th style="text-align:right">市值 ($B)</th><th>赛道</th><th style="text-align:center">DNA 匹配</th><th style="text-align:center">护城河</th><th style="text-align:center">TAM扩</th><th style="text-align:center">瓶颈</th><th style="text-align:center">平台</th></tr>
+    </thead>
+    <tbody id="candidateBody"></tbody>
+  </table></div>
+
+  <div id="candidateDetail" class="detail-panel"></div>
+</div>
+
+<!-- Radar Comparison Chart -->
+<div class="card">
+  <h2><span class="icon">🎯</span> DNA 雷达对比：Nvidia 2015 vs 当前候选人</h2>
+  <div style="display:flex; gap:12px; margin-bottom:12px; flex-wrap:wrap;" id="radarToggle"></div>
+  <div class="chart-wrap-sm"><canvas id="radarChart"></canvas></div>
+  <p class="tooltip-hint">选择 1-3 个候选人与 Nvidia 2015 对比。雷达面积越大，结构性相似度越高。</p>
+</div>
+
+<!-- Key Structural Insights -->
+<div class="card">
+  <h2><span class="icon">💡</span> 核心洞察</h2>
+  <div class="insight-row">
+    <div class="insight-card">
+      <div class="insight-title"><span class="tag tag-bull">关键模式</span> 瓶颈，而非热点</div>
+      <p>Nvidia 成功的本质不是"赌对了 AI"，而是<b>占据了物理瓶颈位置</b>——无论 AI 谁赢，算力总要有人提供。今天最像这一点的不是 AI 应用公司，而是 <b>半导体设备链中的几家隐形冠军</b>：ASM International (ALD 沉积)、BE Semi (先进封装)、Credo (高速互联)——它们占据的物理瓶颈即使 AI 技术路线切换也绕不开。</p>
+    </div>
+    <div class="insight-card">
+      <div class="insight-title"><span class="tag tag-bear">反面警示</span> 不是每个垄断都是 Nvidia</div>
+      <p>ASML 有 EUV 垄断，但市值已是 $400B——它的增长曲线更像是"慢速复合"而非"指数爆发"。真正的"下一个 Nvidia"需要同时具备<b>垄断 + 小市值 + TAM 即将爆炸</b>。三个缺一个 = 好公司但不是 300× 的种子。按这个标准，<b>Credo (CRDO, $12B)</b>、<b>BE Semi (BESIY, $15B)</b>、<b>Aehr Test (AEHR, $2B)</b> 的组合更接近 Nvidia 2015 的体量和结构性位置。</p>
+    </div>
+    <div class="insight-card">
+      <div class="insight-title"><span class="tag tag-bull">被低估的维度</span> 平台效应</div>
+      <p>Nvidia 从 2015 年到 2023 年的估值重估，核心触发不是收入增长（收入涨了 ~15×），而是<b>PE 从 15-20× 重估到 60-100×</b>——市场把它从周期性半导体股重新定价为平台公司。今天哪些公司仍被当作"设备商"/"零部件商"定价，但实际上具备平台级生态？<b>ARM（架构授权）</b> 和 <b>Synopsys（EDA+IP）</b> 有这种潜力，但市值已较高。</p>
+    </div>
+    <div class="insight-card">
+      <div class="insight-title"><span class="tag tag-bear">最大盲点</span> 创始人维度不可量化</div>
+      <p>Jensen Huang 的远见（2006年投 CUDA、2016年投 AI 数据中心）无法量化建模。今天的小市值公司中，<b>谁有类似量级的创始人？</b> 这个问题没有数据源——但可能恰恰是最重要的筛选器。Axon 的 Rick Smith（25年CEO）、ASMI 的 Benjamin Loh 值得关注，但需进一步尽调。</p>
+    </div>
+  </div>
+</div>
+
+<!-- Methodology -->
+<div class="card" style="opacity:0.8;">
+  <h2><span class="icon">⚙️</span> 方法论说明</h2>
+  <p style="color:var(--text2);font-size:13px;line-height:1.8;">
+    <b>Nvidia DNA 7 维度框架</b> 基于对 Nvidia 2015-2025 十年演化的反向工程，非归纳法拟合。<br>
+    <b>候选池</b>：筛选全球市值 <$50B、在半导体/AI/机器人价值链中处于瓶颈位置的上市公司，再排除纯概念/无盈利/无护城河的公司。<br>
+    <b>评分</b>：每个维度 1-5 星，基于公开信息和行业分析，非量化模型。权重：瓶颈位置 (25%) > TAM 扩展潜力 (20%) > 护城河 (20%) > 平台性 (15%) > 起点低估 (10%) > 创始人 (5%) > R&D 强度 (5%)。<br>
+    <b>核心局限</b>：(1) 历史不重复——Nvidia 的结构性条件可能不可复制；(2) 市值 $17.7B 区间与当前市场环境不同；(3) 创始人质量无法量化，但可能是最决定性的变量。<br>
+    <b>⚠️ 这不是选股建议</b>——这是结构性基因分析。每个候选人都有独立的熊市论点，请独立研究。
+  </p>
+</div>
+
+</div>
+
+<div class="footer">
+  Ariste · 2026-05-30 · 数据来源：companiesmarketcap.com, Yahoo Finance, 公开研报<br>
+  基于 Nvidia 十年市值演化反向工程的 <b>结构性基因匹配框架</b>
+</div>
+
+<script>
+// ─── Nvidia Market Cap Data ───
+// 数据来源：companiesmarketcap, 雪球/东方财富 (年度数据)，交叉验证
+// 2026.5.30当前：$214.25×24.2B≈$5.2T；峰值$227.16(5/13)≈$5.5T
+const nvdaData = [
+  { year: 2015, mcap: 17.7, event: 'GPU游戏公司。年底$17.7B，PE 15-20×周期股定价' },
+  { year: 2016, mcap: 57.5, event: 'Pascal架构发布，深度学习GPU起飞' },
+  { year: 2017, mcap: 117, event: 'Volta+V100发布，数据中心收入爆发' },
+  { year: 2018, mcap: 81.4, event: '加密货币崩盘，GPU库存过剩，股价腰斩' },
+  { year: 2019, mcap: 144, event: '收购Mellanox，布局数据中心网络' },
+  { year: 2020, mcap: 323, event: 'A100发布，AI训练需求暴增，CUDA~10万开发者' },
+  { year: 2021, mcap: 735, event: 'Ampere架构+元宇宙叙事，市值冲$735B' },
+  { year: 2022, mcap: 360, event: '加息周期，科技股暴跌，市值腰斩' },
+  { year: 2023, mcap: 1220, event: 'ChatGPT时刻！H100供不应求，首破$1T(5/30)' },
+  { year: 2024, mcap: 3290, event: 'Blackwell发布，成为全球最高市值公司' },
+  { year: 2025, mcap: 4580, event: 'AI超级周期验证，年收入破$150B' },
+  { year: 2026, mcap: 5200, event: '当前$5.2T(峰值$5.5T)，全球#1。PE<20倍' },
+];
+
+// ─── Candidate Data ───
+const candidates = [
+  {
+    ticker:'CRDO', name:'Credo Technology', mcap:12, sector:'高速互联',
+    scores: { moat:4, tam:5, bottleneck:5, platform:2, undervalued:5, founder:3, rd:4 },
+    thesis: 'AI数据中心的"血管"——GPU之间的数据传输瓶颈。AEC有源电缆技术是英伟达Spectrum-X生态的关键供应商。$12B市值vs$500B+ AI网络TAM。',
+    risk: '大客户集中度高(微软/AWS)，技术路线若被光互联替代则护城河崩塌。',
+  },
+  {
+    ticker:'BESIY', name:'BE Semiconductor', mcap:15, sector:'先进封装',
+    scores: { moat:5, tam:4, bottleneck:5, platform:2, undervalued:4, founder:3, rd:4 },
+    thesis: 'Chiplet/异构集成的"铲子商"——AI芯片越做越大，先进封装是唯一解。Hybrid Bonding设备龙头，没有它GPU做不大。',
+    risk: '周期性波动大，产能扩张节奏难预测。台积电等大客户可能自研设备。',
+  },
+  {
+    ticker:'ASMIY', name:'ASM International', mcap:35, sector:'ALD沉积',
+    scores: { moat:5, tam:4, bottleneck:5, platform:3, undervalued:3, founder:3, rd:5 },
+    thesis: '原子层沉积(ALD)技术全球龙头。GAA晶体管+3D NAND+先进封装都需要ALD——每一代制程升级都增加ALD步骤数。',
+    risk: '$35B市值已不便宜，增速慢于设备同行。若EUV路径被替代可能间接影响。',
+  },
+  {
+    ticker:'AXON', name:'Axon Enterprise', mcap:50, sector:'公共安全AI',
+    scores: { moat:5, tam:5, bottleneck:3, platform:5, undervalued:3, founder:5, rd:4 },
+    thesis: '公共安全领域的"iOS"——执法记录仪+云证据+AI分析形成生态闭环。SaaS经常性收入占比>80%。从执法扩展到消防、急救、军事。',
+    risk: '$50B市值已偏高，政府预算周期风险。增长更多是线性而非指数。',
+  },
+  {
+    ticker:'VRT', name:'Vertiv Holdings', mcap:45, sector:'数据中心基建',
+    scores: { moat:3, tam:5, bottleneck:4, platform:2, undervalued:3, founder:2, rd:3 },
+    thesis: 'AI数据中心的"空调+电源"——每台GPU功耗从300W→1000W→更高，散热和配电需求指数级增长。Dell财报已验证此逻辑。',
+    risk: '竞争激烈(Schneider/Eaton)，差异化有限。估值已price in大量增长预期。',
+  },
+  {
+    ticker:'CRWD', name:'CrowdStrike', mcap:100, sector:'AI安全',
+    scores: { moat:4, tam:5, bottleneck:3, platform:5, undervalued:2, founder:4, rd:4 },
+    thesis: 'AI时代的端点安全平台——每个AI Agent都是新攻击面。Falcon平台网络效应+数据飞轮。2024 outage后已恢复增长。',
+    risk: '$100B市值远超Nvidia 2015起点，需更高增长才能复制~300×。竞争来自Microsoft/SentinelOne。',
+  },
+  {
+    ticker:'PLTR', name:'Palantir Technologies', mcap:250, sector:'AI数据平台',
+    scores: { moat:5, tam:5, bottleneck:2, platform:5, undervalued:1, founder:5, rd:5 },
+    thesis: '最像"软件版Nvidia"——AIP平台是政府和企业AI部署的事实标准。Ontology层形成数据网络效应。从国防扩展到商业，TAM巨大。',
+    risk: '$250B市值已是Nvidia 2015的16×，起点完全不同。估值争议极大(bear case:仅值$50B)。政治风险(国防依赖)。',
+  },
+  {
+    ticker:'AEHR', name:'Aehr Test Systems', mcap:2, sector:'SiC晶圆测试',
+    scores: { moat:4, tam:4, bottleneck:4, platform:1, undervalued:5, founder:3, rd:3 },
+    thesis: '碳化硅(SiC)晶圆级测试的隐形冠军。EV+AI数据中心电源都需要SiC——每个SiC晶圆必须100%测试。$2B市值，若EV/SiC爆发则TAM跳跃。',
+    risk: '客户集中(特斯拉/安森美)，SiC市场需求波动大。市值小=流动性风险高，产品线单一。',
+  },
+  {
+    ticker:'NVMI', name:'Nova Ltd', mcap:8, sector:'半导体量测',
+    scores: { moat:4, tam:3, bottleneck:5, platform:2, undervalued:5, founder:2, rd:4 },
+    thesis: '先进制程量测设备——越先进的芯片越需要精确量测。GAA/3D NAND/Chiplet都推动量测需求。光学CD+材料+XR三线布局。',
+    risk: '赛道小众，TAM上限有限。竞争对手KLA在量测领域更强大。',
+  },
+  {
+    ticker:'ONTO', name:'Onto Innovation', mcap:10, sector:'先进封装检测',
+    scores: { moat:4, tam:4, bottleneck:4, platform:2, undervalued:5, founder:2, rd:4 },
+    thesis: '先进封装检测设备龙头。Chiplet/HBM/3D封装需要亚微米级缺陷检测——这是封装从"后端工序"升级为"性能引擎"的结构性变化。',
+    risk: '封装检测市场较小，增长依赖Chiplet/HBM路线不被替代。与Camtek竞争。',
+  },
+];
+
+// ─── Charts ───
+let nvdaChart, radarChart;
+let currentScale = 'log';
+let selectedCandidates = ['CRDO', 'BESIY', 'ASMIY']; // default radar picks
+
+function buildNvdaChart(scale) {
+  const ctx = document.getElementById('nvdaChart').getContext('2d');
+  if (nvdaChart) nvdaChart.destroy();
+  nvdaChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: nvdaData.map(d => d.year),
+      datasets: [{
+        label: 'Nvidia 市值 ($B)',
+        data: nvdaData.map(d => d.mcap),
+        borderColor: '#76b900',
+        backgroundColor: 'rgba(118,185,0,0.05)',
+        borderWidth: 3,
+        fill: true,
+        tension: 0.3,
+        pointRadius: 6,
+        pointHoverRadius: 10,
+        pointBackgroundColor: nvdaData.map(d =>
+          d.year === 2015 ? '#00d4ff' : d.year === 2026 ? '#ff6b6b' : '#76b900'
+        ),
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { intersect: false, mode: 'index' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const d = nvdaData[ctx.dataIndex];
+              return [`市值: $${d.mcap}B`, `事件: ${d.event}`];
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          type: scale === 'log' ? 'logarithmic' : 'linear',
+          title: { display: true, text: '市值 (十亿美元, '+(scale==='log'?'对数':'线性')+'轴)', color: '#9090a8' },
+          grid: { color: 'rgba(42,42,58,0.5)' },
+          ticks: { color: '#9090a8', callback: v => '$' + v + 'B' }
+        },
+        x: {
+          grid: { color: 'rgba(42,42,58,0.3)' },
+          ticks: { color: '#9090a8' }
+        }
+      },
+      onClick: (e, els) => {
+        if (els.length) showInflection(els[0].index);
+      }
+    }
+  });
+}
+
+function switchScale(scale) {
+  currentScale = scale;
+  document.querySelectorAll('#scaleToggle .toggle-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#scaleToggle .toggle-btn').forEach(b => {
+    if (b.textContent.includes(scale === 'log' ? '对数' : '线性')) b.classList.add('active');
+  });
+  buildNvdaChart(scale);
+}
+
+function showInflection(idx) {
+  const d = nvdaData[idx];
+  const panel = document.getElementById('inflectionDetail');
+  panel.innerHTML = `
+    <div class="company-name">${d.year} — 市值 $${d.mcap}B</div>
+    <p style="margin-top:8px;font-size:16px;">${d.event}</p>
+    <p style="color:var(--text2);margin-top:8px;">
+      ${idx === 0 ? '起点：没有人会把一家$15B的游戏GPU公司当成"下一个万亿巨头"。当时的Nvidia PE仅15-20×，被定价为周期性半导体。' : ''}
+      ${idx === 3 ? '这是关键测试：真正伟大的公司不止涨——而是跌50%以后还能翻50倍。2018年加密货币崩盘让Nvidia股价腰斩，但数据中心收入已经开始替代。' : ''}
+      ${idx === 8 ? 'ChatGPT时刻：市场终于理解了CUDA不是"显卡驱动"，而是AI计算的唯一操作系统。从这一刻起，Nvidia被从半导体股重定价为平台股。' : ''}
+      ${idx === 11 ? '当前：$5.2T (峰值$5.5T)。全球#1。PE<20倍——段永平说还不贵。但注意——Anthropic的算力仅6个月短租合约。如果AI资本开支拐点出现，Nvidia的周期性基因可能重新浮现。' : ''}
+    </p>
+  `;
+  panel.classList.add('show');
+}
+
+// Build inflection bar
+(function() {
+  const colors = ['#00d4ff','#76b900','#76b900','#ff6b6b','#76b900','#76b900','#76b900','#ff6b6b','#f0c040','#f0c040','#76b900','#ff6b6b'];
+  const bar = document.getElementById('inflectionBar');
+  nvdaData.forEach((d, i) => {
+    const dot = document.createElement('span');
+    dot.className = 'inflection-dot';
+    dot.innerHTML = `<span class="dot" style="background:${colors[i]}"></span> ${d.year}`;
+    dot.onclick = () => showInflection(i);
+    bar.appendChild(dot);
+  });
+})();
+
+// ─── Candidate Table ───
+function calcOverall(scores) {
+  const w = { moat:20, tam:20, bottleneck:25, platform:15, undervalued:10, founder:5, rd:5 };
+  let total = 0, max = 0;
+  for (const [k,v] of Object.entries(w)) { total += (scores[k]||0) * v; max += 5 * v; }
+  return Math.round((total / max) * 100);
+}
+
+function renderCandidateTable() {
+  const sorted = [...candidates].sort((a,b) => calcOverall(b.scores) - calcOverall(a.scores));
+  const tbody = document.getElementById('candidateBody');
+  const star = n => '★'.repeat(n) + '☆'.repeat(5-n);
+  tbody.innerHTML = sorted.map((c,i) => {
+    const oa = calcOverall(c.scores);
+    return `
+    <tr data-idx="${i}" onclick="selectCandidate(${i})" id="crow-${i}">
+      <td class="ticker">${c.ticker}</td>
+      <td class="name">${c.name}</td>
+      <td class="mcap">$${c.mcap}B</td>
+      <td>${c.sector}</td>
+      <td class="score"><span style="font-weight:700;color:var(--nvda)">${oa}%</span><div class="score-bar"><div class="score-bar-inner" style="width:${oa}%"></div></div></td>
+      <td class="stars">${star(c.scores.moat)}</td>
+      <td class="stars">${star(c.scores.tam)}</td>
+      <td class="stars">${star(c.scores.bottleneck)}</td>
+      <td class="stars">${star(c.scores.platform)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function selectCandidate(idx) {
+  document.querySelectorAll('.candidate-table tr').forEach(r => r.classList.remove('selected'));
+  document.getElementById('crow-'+idx).classList.add('selected');
+  const c = [...candidates].sort((a,b) => calcOverall(b.scores) - calcOverall(a.scores))[idx];
+  const panel = document.getElementById('candidateDetail');
+  const s = c.scores;
+  panel.innerHTML = `
+    <div class="company-name">${c.ticker} — ${c.name}</div>
+    <div class="company-sector">${c.sector} · 市值 $${c.mcap}B</div>
+    <div class="detail-grid">
+      <div class="detail-item"><div class="dim-label">护城河</div><div class="dim-score">${'★'.repeat(s.moat)}${'☆'.repeat(5-s.moat)}</div><div style="color:var(--text2);font-size:13px;">${['','弱','一般','较强','强','极强'][s.moat]}</div></div>
+      <div class="detail-item"><div class="dim-label">TAM 扩展潜力</div><div class="dim-score">${'★'.repeat(s.tam)}${'☆'.repeat(5-s.tam)}</div></div>
+      <div class="detail-item"><div class="dim-label">瓶颈位置</div><div class="dim-score">${'★'.repeat(s.bottleneck)}${'☆'.repeat(5-s.bottleneck)}</div></div>
+      <div class="detail-item"><div class="dim-label">平台性</div><div class="dim-score">${'★'.repeat(s.platform)}${'☆'.repeat(5-s.platform)}</div></div>
+      <div class="detail-item"><div class="dim-label">起点低估程度</div><div class="dim-score">${'★'.repeat(s.undervalued)}${'☆'.repeat(5-s.undervalued)}</div></div>
+      <div class="detail-item"><div class="dim-label">创始人/管理层</div><div class="dim-score">${'★'.repeat(s.founder)}${'☆'.repeat(5-s.founder)}</div></div>
+      <div class="detail-item"><div class="dim-label">R&D 强度</div><div class="dim-score">${'★'.repeat(s.rd)}${'☆'.repeat(5-s.rd)}</div></div>
+      <div class="detail-item" style="grid-column:1/-1;">
+        <div class="dim-label">综合 DNA 匹配度</div>
+        <div class="dim-score" style="font-size:32px;">${calcOverall(s)}%</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding:16px;background:var(--surface);border-radius:8px;">
+      <strong style="color:var(--nvda);">🐂 核心论点</strong>
+      <p style="margin-top:6px;font-size:14px;color:var(--text2);">${c.thesis}</p>
+    </div>
+    <div style="margin-top:8px;padding:16px;background:var(--surface);border-radius:8px;">
+      <strong style="color:var(--warn);">🐻 核心风险</strong>
+      <p style="margin-top:6px;font-size:14px;color:var(--text2);">${c.risk}</p>
+    </div>
+  `;
+  panel.classList.add('show');
+
+  // Update radar toggle
+  updateRadarSelection(c.ticker);
+}
+
+// ─── Radar Chart ───
+function buildRadar() {
+  const ctx = document.getElementById('radarChart').getContext('2d');
+  if (radarChart) radarChart.destroy();
+
+  const labels = ['护城河', 'TAM扩展', '瓶颈位置', '平台性', '起点低估', '创始人', 'R&D强度'];
+
+  // Nvidia 2015 baseline
+  const nvda2015 = [4, 5, 4, 3, 5, 5, 5];
+
+  const colors = ['#76b900','#00d4ff','#f0c040','#ff6b6b','#a855f7'];
+  const datasets = [{
+    label: 'Nvidia 2015',
+    data: nvda2015,
+    borderColor: '#76b900',
+    backgroundColor: 'rgba(118,185,0,0.15)',
+    borderWidth: 3,
+    pointRadius: 4,
+  }];
+
+  selectedCandidates.forEach((ticker, i) => {
+    const c = candidates.find(x => x.ticker === ticker);
+    if (!c) return;
+    const s = c.scores;
+    datasets.push({
+      label: `${c.ticker} ($${c.mcap}B)`,
+      data: [s.moat, s.tam, s.bottleneck, s.platform, s.undervalued, s.founder, s.rd],
+      borderColor: colors[(i+1) % colors.length],
+      backgroundColor: 'transparent',
+      borderWidth: 2,
+      borderDash: [4, 4],
+      pointRadius: 4,
+    });
+  });
+
+  radarChart = new Chart(ctx, {
+    type: 'radar',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        r: {
+          min: 1, max: 5,
+          ticks: { stepSize: 1, color: '#9090a8', backdropColor: 'transparent' },
+          grid: { color: 'rgba(42,42,58,0.5)' },
+          pointLabels: { color: '#9090a8', font: { size: 12 } }
+        }
+      },
+      plugins: {
+        legend: {
+          labels: { color: '#9090a8', usePointStyle: true, padding: 16 }
+        }
+      }
+    }
+  });
+}
+
+function updateRadarSelection(ticker) {
+  const idx = selectedCandidates.indexOf(ticker);
+  if (idx >= 0) {
+    selectedCandidates.splice(idx, 1);
+  } else {
+    if (selectedCandidates.length >= 3) selectedCandidates.shift();
+    selectedCandidates.push(ticker);
+  }
+  buildRadar();
+  renderRadarToggle();
+}
+
+function renderRadarToggle() {
+  const container = document.getElementById('radarToggle');
+  const sorted = [...candidates].sort((a,b) => calcOverall(b.scores) - calcOverall(a.scores));
+  container.innerHTML = sorted.slice(0,8).map(c => {
+    const active = selectedCandidates.includes(c.ticker);
+    return `<button class="toggle-btn ${active ? 'active' : ''}"
+      style="font-size:12px;padding:6px 14px;"
+      onclick="updateRadarSelection('${c.ticker}')">${c.ticker}</button>`;
+  }).join('');
+}
+
+// ─── Init ───
+renderCandidateTable();
+buildNvdaChart('log');
+buildRadar();
+renderRadarToggle();
+selectCandidate(0); // Show first candidate by default
+</script>
+
+</body>
+</html>
