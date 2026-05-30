@@ -330,18 +330,20 @@ canvas { max-width:100%; }
   </p>
 </div>
 
-<!-- Two-Razor Screening -->
+<!-- Four-Razor Funnel -->
 <div class="card" id="razorCard">
-  <h2><span class="icon">🔪</span> 两刀筛选：从 19 只到精华池</h2>
+  <h2><span class="icon">🔪</span> 四刀漏斗：第一性原理筛选 · 19→7→1</h2>
   <p style="color:var(--text2);margin-bottom:16px;">
-    借鉴段永平"对的生意+对的人+对的价格"三关框架，提取两道最硬门槛对候选池做手术式切割。双击筛选下的每道刀都有独立的反方论证——<b>不是砍掉好公司，是砍掉"不能成为下一个Nvidia"的公司</b>。
+    前两刀(段永平框架)砍掉数学上不可能和物理上不刚的。后两刀(第一性原理)砍掉无法复制Nvidia核心基因的。<b>四刀全过=最接近Nvidia 2015结构性位置的候选。</b>
   </p>
 
   <div class="toggle-group" id="razorToggle" style="margin-bottom:20px;">
     <button class="toggle-btn active" onclick="applyRazor('all')">全量池 (19只)</button>
-    <button class="toggle-btn" onclick="applyRazor('r1')">🔪 第一刀：起点过高</button>
-    <button class="toggle-btn" onclick="applyRazor('r2')">🔪 第二刀：瓶颈不刚</button>
-    <button class="toggle-btn" onclick="applyRazor('both')">🔪🔪 双刀过关</button>
+    <button class="toggle-btn" onclick="applyRazor('r1')">🔪 一：起点过高</button>
+    <button class="toggle-btn" onclick="applyRazor('r2')">🔪 二：瓶颈不刚</button>
+    <button class="toggle-btn" onclick="applyRazor('r3')">🔪 三：非通用基板</button>
+    <button class="toggle-btn" onclick="applyRazor('r4')">🔪 四：无价值复利</button>
+    <button class="toggle-btn" onclick="applyRazor('all4')">🔪🔪🔪🔪 四刀全过</button>
   </div>
 
   <h3>🔪 第一刀：市值≤$25B — "如果你起点已是巨兽，不可能跑300×"</h3>
@@ -368,9 +370,48 @@ canvas { max-width:100%; }
     </div>
   </div>
 
-  <h3 style="margin-top:20px;">✅ 双刀过关（7只精华池）</h3>
-  <p style="color:var(--text2);font-size:14px;">以下候选同时满足：起点≤$25B + 占据物理上不可绕过的瓶颈位置。</p>
+  <h3 style="margin-top:20px;">✅ 双刀过关（12只→7只）</h3>
+  <p style="color:var(--text2);font-size:14px;">起点≤$25B + 物理瓶颈刚性。</p>
   <div id="razorSurvivors" style="margin-top:12px;"></div>
+
+  <h3 style="margin-top:24px;">🔪 第三刀：通用基板性 — "你的技术能同时服务几个互不相关的市场？"</h3>
+  <div class="insight-row">
+    <div class="insight-card">
+      <div class="insight-title"><span class="tag tag-bull">第一性原理</span></div>
+      <p>Nvidia 300×的本质不是"GPU卖得好"——是<b>并行计算是一个通用基板</b>，从游戏→挖矿→AI训练→AI推理→自动驾驶→机器人，每一次跳跃都是同一套技术栈服务了全新市场。<b>专用组件(e.g. DDR5接口芯片、SiC测试机、ALD沉积设备)的TAM是线性的——只能在自己的赛道里增长。通用基板才有指数性跳跃。</b></p>
+    </div>
+    <div class="insight-card">
+      <div class="insight-title"><span class="tag tag-bear">砍掉的</span></div>
+      <p>CRDO(仅AI网络) · BESIY(仅先进封装) · AEHR(仅SiC测试) · NVMI(仅半导体量测) · ONTO(仅封装检测) · 绿的谐波(仅减速器)<br><span style="color:var(--text2);font-size:12px;">这些是伟大的利基冠军——但利基冠军不会跑300×。</span></p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:24px;">🔪 第四刀：价值复利性 — "每多一个客户，你的护城河是加深还是变浅？"</h3>
+  <div class="insight-row">
+    <div class="insight-card">
+      <div class="insight-title"><span class="tag tag-bull">第一性原理</span></div>
+      <p>CUDA的奥义不是"兼容性强"——是<b>价值在生态系统内复利</b>：每个新开发者→更多库→更多应用→吸引更多开发者。<b>设备商的逻辑是相反的：每卖一台机器，客户学会用了，反而降低了对你的依赖。</b>真正的架构锁定=客户无法离开不是因为"麻烦"，而是因为"离开了就做不了"。汇川技术的"工控+工艺"一体化正是这个逻辑——工厂一旦采用汇川的全链PLC+伺服+控制器方案，切换意味着重新培训工程师、重写控制程序、重新认证产线。</p>
+    </div>
+    <div class="insight-card">
+      <div class="insight-title"><span class="tag tag-bear">砍掉的</span></div>
+      <p>CRDO(标准协议,可替换) · BESIY(TSMC可自研) · AEHR(单产品,可替换) · NVMI(KLA更大) · ONTO(设备商逻辑) · 绿的谐波(日本HD仍领先,可被替代)<br><span style="color:var(--text2);font-size:12px;">设备商卖的是工具——客户捕获了大部分价值。平台商卖的是生态——价值在系统内复利。</span></p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:24px;">🏆 四刀全过：1 只 — 汇川技术 (300124, $24B)</h3>
+  <div style="background:var(--surface2);border:1px solid var(--nvda);border-radius:12px;padding:20px;margin-top:12px;">
+    <p style="font-size:14px;color:var(--text2);line-height:1.8;">
+      <b style="color:var(--nvda);">全量19只候选池中，唯一通过四道刀的公司。</b>这不是说汇川一定会成为"下一个Nvidia"——而是说<b>在当前可识别的结构条件下，它最接近Nvidia 2015的基因组合。</b><br><br>
+      <b>为什么汇川通过了全部四道刀：</b><br>
+      🔪 <b>第一刀(起点≤$25B):</b> ¥1700亿≈$24B，与Nvidia 2015的$17.7B处于同一数量级。<br>
+      🔪 <b>第二刀(物理瓶颈):</b> 每台工业/人形机器人的每个轴都需要伺服电机和控制——这是不可绕过的"运动税"。汇川伺服市占率32%(连续5年中国#1)，变频器22%。<br>
+      🔪 <b>第三刀(通用基板):</b> 运动控制是<b>跨行业的通用技术基板</b>——同一套伺服+PLC+变频器技术栈服务工业自动化、新能源汽车(电驱系统)、机器人、数字能源四个"技术同源"的业务板块。这与Nvidia的GPU从游戏→AI→自动驾驶的跳跃模式高度同构。<br>
+      🔪 <b>第四刀(价值复利):</b> 汇川的"工控+工艺"一体化策略创造<b>深度客户锁定</b>——不是卖标准化产品，而是深度嵌入客户产线工艺。切换成本包括重写控制程序、重训工程师、重认证产线。这种锁定不是"麻烦"级别的——是"离开后产线停摆"级别的。这就是工业自动化领域的CUDA锁定。<br><br>
+      <b>创始人维度：</b>朱兴明，前华为电气工程师，2003年带18位前同事(16位华为)创立汇川。2007年在内部信中预言"一定要做PLC和伺服系统，它们是未来驱动器的王者"——与Jensen 2006年押注CUDA的远见同构。20+年持续领导，技术出身。<b>华为系"狼性文化"移植到工业自动化——客户粘性策略(绑定大客户、深度理解工艺、定制方案)直接继承自华为"打井式渗透"基因。</b><br><br>
+      <b>平台化路径已部分验证：</b>从单一变频器→伺服+PLC→"控制器-执行器-传感器"全链条→iFA工业软件平台。子公司联合动力(EV电驱系统)已分拆IPO——"再造一个小汇川"的叙事正在兑现。人形机器人的伺服需求(每台20-40个关节电机)提供了第三个TAM跳跃选项。<br><br>
+      <b>核心风险：</b>(1) 工业自动化周期性——制造业景气度波动直接影响订单；(2) 西门子/三菱在高端市场仍有品牌优势；(3) 市值¥1700亿已不属"小公司"范畴(约6.7x PS)，估值裂缝不如AEHR/绿的谐波等$2-5B候选深；(4) 通用自动化增速放缓(2026Q1+14%)需要EV和机器人接力。
+    </p>
+  </div>
 
   <h3 style="margin-top:24px;">⚠️ 宇树科技：两刀下的特例分析</h3>
   <div style="background:var(--surface2);border:1px solid var(--warn);border-radius:12px;padding:20px;margin-top:12px;">
@@ -384,7 +425,7 @@ canvas { max-width:100%; }
     </p>
   </div>
 
-  <h3 style="margin-top:20px;">🧪 双刀框架 thesis-check</h3>
+  <h3 style="margin-top:20px;">🧪 四刀漏斗 thesis-check</h3>
   <p style="color:var(--text2);font-size:14px;">
     <b>证据 🟢</b> — 市值数据和瓶颈分析可交叉验证 | <b>原创性 🟢</b> — 两刀框架为"段永平三关→投资筛选"的原创翻译 | <b>时效性 🟢</b> — 宇树IPO在即、绿的谐波人形机器人TAM爆发窗口 | <b>反方 🟢</b> — 每道刀配独立反方论证，宇树深度报告提供天敌级反方<br>
     🧪 thesis-check: <b style="color:var(--nvda)">4/4</b> — 四个支柱全部通过。
@@ -800,11 +841,22 @@ function renderRadarToggle() {
 // ─── Two-Razor Filter ───
 // Razor 1: 市值 ≤ $25B (起点门槛)
 function razor1Pass(c) { return c.mcap <= 25; }
-// Razor 2: 物理瓶颈刚性 (硬瓶颈 — bottleneck >= 4 且 不是政策/品牌/监管护城河)
+// Razor 2: 物理瓶颈刚性
 function razor2Pass(c) {
-  // 硬瓶颈定义：bottleneck评分≥4 且 非政策/品牌/监管类
-  const softBottleneckTickers = ['300866','688111','6969.HK','301269','IPO-YUSH']; // 安克/金山/思摩尔/华大/宇树
+  const softBottleneckTickers = ['300866','688111','6969.HK','301269','IPO-YUSH'];
   return c.scores.bottleneck >= 4 && !softBottleneckTickers.includes(c.ticker);
+}
+// Razor 3: 通用基板性 — 技术能服务多个互不相关的市场
+function razor3Pass(c) {
+  // 汇川技术: 运动控制=跨行业通用基板(工业/EV/机器人/能源)
+  const substrateTickers = ['300124']; // 汇川技术
+  return substrateTickers.includes(c.ticker);
+}
+// Razor 4: 价值复利性 — 每多一个客户,护城河加深(平台/架构锁定)
+function razor4Pass(c) {
+  // 只有具备"客户无法离开"的架构锁定的候选
+  const compoundTickers = ['300124']; // 汇川技术: 工控+工艺一体化锁定
+  return compoundTickers.includes(c.ticker);
 }
 
 function getSurvivorTickers(razor) {
@@ -812,7 +864,9 @@ function getSurvivorTickers(razor) {
     if (razor === 'all') return true;
     if (razor === 'r1') return razor1Pass(c);
     if (razor === 'r2') return razor2Pass(c);
-    if (razor === 'both') return razor1Pass(c) && razor2Pass(c);
+    if (razor === 'r3') return razor3Pass(c);
+    if (razor === 'r4') return razor4Pass(c);
+    if (razor === 'all4') return razor1Pass(c) && razor2Pass(c) && razor3Pass(c) && razor4Pass(c);
     return true;
   }).map(c => c.ticker);
 }
@@ -822,9 +876,11 @@ function applyRazor(razor) {
   document.querySelectorAll('#razorToggle .toggle-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('#razorToggle .toggle-btn').forEach(b => {
     if ((razor==='all' && b.textContent.includes('全量')) ||
-        (razor==='r1' && b.textContent.includes('第一刀')) ||
-        (razor==='r2' && b.textContent.includes('第二刀')) ||
-        (razor==='both' && b.textContent.includes('双刀'))) {
+        (razor==='r1' && b.textContent.includes('一：')) ||
+        (razor==='r2' && b.textContent.includes('二：')) ||
+        (razor==='r3' && b.textContent.includes('三：')) ||
+        (razor==='r4' && b.textContent.includes('四：')) ||
+        (razor==='all4' && b.textContent.includes('四刀全过'))) {
       b.classList.add('active');
     }
   });
@@ -863,7 +919,7 @@ function applyRazor(razor) {
       div.innerHTML = '<p style="color:var(--text2);font-size:13px;">选择上方剃刀按钮应用筛选。</p>';
     } else {
       div.innerHTML = `<div style="display:flex;flex-wrap:wrap;gap:8px;">${survivorNames.map(n => `<span style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 12px;font-size:13px;">${n}</span>`).join('')}</div>` +
-        `<p style="margin-top:8px;font-size:12px;color:var(--text2);">${survivors.length}只候选${razor==='both'?'通过两道刀':(razor==='r1'?'通过第一刀(起点≤$25B)':'通过第二刀(硬瓶颈)')}</p>`;
+        `<p style="margin-top:8px;font-size:12px;color:var(--text2);">${survivors.length}只候选${razor==='all4'?'通过四道刀':(razor==='r1'?'通过第一刀(≤$25B)':(razor==='r2'?'通过第二刀(硬瓶颈)':(razor==='r3'?'通过第三刀(通用基板)':(razor==='r4'?'通过第四刀(价值复利)':'全量'))))}</p>`;
     }
   }
 
