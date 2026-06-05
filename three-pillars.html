@@ -23,9 +23,10 @@
 <meta name="twitter:image" content="https://image.pollinations.ai/prompt/three%20investment%20philosophy%20pillars%20collision%20dark%20theme?width=1200&height=630&nologo=true">
 <link rel="canonical" href="https://jasoneip01-pixel.github.io/next-nvidia/three-pillars.html">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
-<script src="https://d3js.org/d3.v7.min.js"></script>
-<!-- ═══════ #7 D3 ═══════ -->
+<!-- D3 loaded deferred to avoid blocking page render (#7) -->
+<script src="https://d3js.org/d3.v7.min.js" defer></script>
 
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <style>
 /* ═══════════════════════════════════════
    #1 SEMANTIC TOKEN BASE — Dark Education v2
@@ -775,6 +776,8 @@ document.getElementById('simCompany').addEventListener('keydown',function(e){
 });
 
 /* ═══════ #7 D3 PHILOSOPHY RELATIONSHIP GRAPH ═══════ */
+document.addEventListener('DOMContentLoaded',function(){
+if(typeof d3==='undefined'){document.getElementById('philoGraph').innerHTML='<p style="text-align:center;padding:40px;color:var(--muted)">⚠️ 图谱引擎加载中... 如持续未显示，请刷新页面</p>';return}
 (function(){
   var container=document.getElementById('philoGraph');
   var W=container.clientWidth,H=500;
@@ -881,6 +884,7 @@ document.getElementById('simCompany').addEventListener('keydown',function(e){
     sim.force('center',d3.forceCenter(W/2,H/2)).alpha(.3).restart();
   });
 })();
+}); // DOMContentLoaded guard
 </script>
 
 </body>
