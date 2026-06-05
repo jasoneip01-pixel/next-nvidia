@@ -21,8 +21,56 @@
   --son: #f0c040;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-body { background:var(--bg); color:var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; line-height:1.7; }
-canvas { max-width:100%; }
+body { background:var(--bg); color:var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; line-height:1.7; overflow-x:hidden; }
+#starfield { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+section, nav, .tab-content, .footer { position:relative; z-index:1; }
+
+/* ── Scroll Reveal ── */
+.reveal { opacity:0; transform:translateY(28px); transition:opacity 0.6s cubic-bezier(0.22,0.61,0.36,1), transform 0.6s cubic-bezier(0.22,0.61,0.36,1); }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay:0.08s; }
+.reveal-delay-2 { transition-delay:0.16s; }
+.reveal-delay-3 { transition-delay:0.24s; }
+.reveal-delay-4 { transition-delay:0.32s; }
+.reveal-delay-5 { transition-delay:0.40s; }
+
+/* ── Funnel Cascade ── */
+.funnel-layer { animation:funnelDrop 0.5s cubic-bezier(0.22,0.61,0.36,1) both; }
+.f1 { animation-delay:0.05s; }
+.f2 { animation-delay:0.12s; }
+.f3 { animation-delay:0.19s; }
+.f4 { animation-delay:0.26s; }
+.f5 { animation-delay:0.33s; }
+.f6 { animation-delay:0.40s; }
+.f7 { animation-delay:0.47s; }
+@keyframes funnelDrop {
+  from { opacity:0; transform:translateY(-16px) scale(0.96); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+
+/* ── Pillar Breathing Glow ── */
+.pillar.duan  { animation:pillarGlowDuan  4s ease-in-out infinite; }
+.pillar.buffett { animation:pillarGlowBuffett 4s ease-in-out infinite; animation-delay:0.6s; }
+.pillar.son { animation:pillarGlowSon 4s ease-in-out infinite; animation-delay:1.2s; }
+@keyframes pillarGlowDuan {
+  0%,100% { box-shadow:0 0 12px rgba(0,212,255,0.04); }
+  50%     { box-shadow:0 0 24px rgba(0,212,255,0.10); }
+}
+@keyframes pillarGlowBuffett {
+  0%,100% { box-shadow:0 0 12px rgba(118,185,0,0.04); }
+  50%     { box-shadow:0 0 24px rgba(118,185,0,0.10); }
+}
+@keyframes pillarGlowSon {
+  0%,100% { box-shadow:0 0 12px rgba(240,192,64,0.04); }
+  50%     { box-shadow:0 0 24px rgba(240,192,64,0.10); }
+}
+
+/* ── Simulator Result Reveal ── */
+.sim-result.revealed { display:block; animation:resultReveal 0.5s cubic-bezier(0.22,0.61,0.36,1); }
+@keyframes resultReveal {
+  from { opacity:0; transform:translateY(12px) scale(0.97); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
 
 /* Hero */
 .hero { text-align:center; padding:clamp(36px,8vw,80px) clamp(16px,4vw,24px) clamp(28px,6vw,60px); position:relative; overflow:hidden; }
@@ -247,16 +295,17 @@ canvas { max-width:100%; }
 </style>
 </head>
 <body>
+<canvas id="starfield"></canvas>
 
 <!-- Hero -->
-<section class="hero">
+<section class="hero reveal">
   <h1>三大投资哲学 · 碰撞与融合</h1>
   <p class="sub">段永平 · 巴菲特&芒格 · 孙正义 — 三条通往真理的路径</p>
 </section>
 
 <!-- Three Pillars -->
 <section class="pillars">
-  <div class="pillar duan" onclick="switchTab('duan')">
+  <div class="pillar duan reveal reveal-delay-1" onclick="switchTab('duan')">
     <div class="icon">🏔️</div>
     <h2>段永平</h2>
     <p class="tagline">护城河优先 · 不懂不做 · 长期持有</p>
@@ -268,7 +317,7 @@ canvas { max-width:100%; }
     </div>
     <p class="record">代表作：网易 100x · 苹果 +1600% · 茅台 10x<br>二十年来真正重仓不到十个</p>
   </div>
-  <div class="pillar buffett" onclick="switchTab('buffett')">
+  <div class="pillar buffett reveal reveal-delay-2" onclick="switchTab('buffett')">
     <div class="icon">🏛️</div>
     <h2>巴菲特 & 芒格</h2>
     <p class="tagline">安全边际 · 浮存金 · 不可替代的资产</p>
@@ -280,7 +329,7 @@ canvas { max-width:100%; }
     </div>
     <p class="record">代表作：可口可乐 36年 · GEICO · BNSF · Apple<br>从"捡烟蒂"到"买伟大公司"的进化者</p>
   </div>
-  <div class="pillar son" onclick="switchTab('son')">
+  <div class="pillar son reveal reveal-delay-3" onclick="switchTab('son')">
     <div class="icon">🚀</div>
     <h2>孙正义</h2>
     <p class="tagline">趋势验证 · 不对称押注 · 300年视野</p>
@@ -306,7 +355,7 @@ canvas { max-width:100%; }
 <div class="tab-content active" id="tab-all">
 
   <!-- Unified Funnel -->
-  <div class="funnel-section">
+  <div class="funnel-section reveal">
     <h2>Ariste 七层决策漏斗</h2>
     <p style="text-align:center;color:var(--text2);margin-bottom:32px;">融合段永平、巴菲特/芒格、孙正义 — 逐层通过，不可跳层</p>
     <div class="funnel">
@@ -321,7 +370,7 @@ canvas { max-width:100%; }
   </div>
 
   <!-- Comparison Matrix -->
-  <div class="section-title"><span>📊</span> 三人对比矩阵</div>
+  <div class="section-title reveal"><span>📊</span> 三人对比矩阵</div>
   <div class="matrix" style="max-width:1100px;margin:0 auto 40px;padding:0 24px;">
     <table class="data-table">
       <tr><th>维度</th><th style="color:var(--duan)">段永平</th><th style="color:var(--nvda)">巴菲特 & 芒格</th><th style="color:var(--gold)">孙正义</th></tr>
@@ -529,7 +578,7 @@ canvas { max-width:100%; }
 </div>
 
 <!-- Interactive Simulator -->
-<div class="sim">
+<div class="sim reveal">
   <h2>🧪 三师会诊</h2>
   <p class="sim-sub">输入任意标的，看三位投资大师会如何决策</p>
   <input type="text" id="simInput" placeholder="输入标的名称... 例：英伟达、茅台、SpaceX...">
@@ -541,7 +590,7 @@ canvas { max-width:100%; }
 </div>
 
 <!-- Key Insights -->
-<div class="insights">
+<div class="insights reveal">
   <h2>💡 核心洞察</h2>
   <div class="insight-grid">
     <div class="insight-card">
@@ -646,9 +695,107 @@ function runSim() {
     </div>
   `;
   
+  resultDiv.classList.add('revealed');
   resultDiv.style.display = 'block';
   resultDiv.scrollIntoView({behavior:'smooth'});
 }
+
+// ── Starfield Canvas ──────────────────────────────────────
+(function(){
+  const c = document.getElementById('starfield');
+  const ctx = c.getContext('2d');
+  let w, h, stars = [];
+  const colors = [
+    {r:0,d:212,g:255,b:255},   // Duan - cyan
+    {r:118,g:185,b:0},          // Buffett - green
+    {r:240,g:192,b:64},         // Son - gold
+  ];
+
+  function resize() {
+    w = c.width = window.innerWidth;
+    h = c.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Init stars: 3 master stars + ~60 background stars
+  stars = colors.map((col,i) => ({
+    x: w*(0.22 + i*0.28), y: h*(0.30 + (i%2)*0.25),
+    r: 2.2 + Math.random()*0.6, vx:0.04-Math.random()*0.08, vy:0.04-Math.random()*0.08,
+    master:true, color:col
+  }));
+  for (let i=0; i<60; i++) {
+    stars.push({
+      x: Math.random()*w, y: Math.random()*h,
+      r: 0.3 + Math.random()*0.9, vx:0.02-Math.random()*0.04, vy:0.02-Math.random()*0.04,
+      master:false
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0,0,w,h);
+
+    // Connection lines between master stars
+    const masters = stars.filter(s=>s.master);
+    for (let i=0; i<masters.length; i++) {
+      for (let j=i+1; j<masters.length; j++) {
+        ctx.beginPath();
+        ctx.moveTo(masters[i].x, masters[i].y);
+        ctx.lineTo(masters[j].x, masters[j].y);
+        ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+
+    stars.forEach(s => {
+      s.x = (s.x + s.vx + w) % w;
+      s.y = (s.y + s.vy + h) % h;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      if (s.master) {
+        const pulse = 0.5 + 0.5 * Math.sin(Date.now()*0.001 + stars.indexOf(s));
+        ctx.fillStyle = `rgba(${s.color.r},${s.color.g},${s.color.b},${0.25 + pulse*0.25})`;
+        ctx.shadowColor = `rgba(${s.color.r},${s.color.g},${s.color.b},${0.3 + pulse*0.3})`;
+        ctx.shadowBlur = 12 + pulse*8;
+      } else {
+        ctx.fillStyle = 'rgba(255,255,255,0.06)';
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+      }
+      ctx.fill();
+    });
+    ctx.shadowBlur = 0;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── Scroll Reveal ────────────────────────────────────────
+(function(){
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+})();
+
+// ── Reset simulator result on new input ─────────────────
+document.getElementById('simInput').addEventListener('input', function(){
+  const r = document.getElementById('simResult');
+  r.classList.remove('revealed');
+  r.style.display = 'none';
+});
+
+// ── Tab button keyboard nav ──────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.setAttribute('tabindex','0');
+  btn.addEventListener('keydown', e => { if (e.key==='Enter') btn.click(); });
+});
+
+// ── Simulator Enter key ──────────────────────────────────
+document.getElementById('simInput').addEventListener('keydown', function(e){
+  if (e.key === 'Enter') runSim();
+});
 </script>
 </body>
 </html>
