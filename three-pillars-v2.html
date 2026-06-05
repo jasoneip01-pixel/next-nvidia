@@ -23,8 +23,8 @@
 <meta name="twitter:image" content="https://image.pollinations.ai/prompt/three%20investment%20philosophy%20pillars%20collision%20dark%20theme?width=1200&height=630&nologo=true">
 <link rel="canonical" href="https://jasoneip01-pixel.github.io/next-nvidia/three-pillars.html">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
-<!-- D3 loaded deferred to avoid blocking page render (#7) -->
-<script src="https://d3js.org/d3.v7.min.js" defer></script>
+<!-- D3 loaded via jsdelivr CDN (reliable in China) -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7" defer></script>
 
 <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
 <script>document.documentElement.classList.add('js')</script>
@@ -787,115 +787,90 @@ document.getElementById('simCompany').addEventListener('keydown',function(e){
 });
 
 /* ═══════ #7 D3 PHILOSOPHY RELATIONSHIP GRAPH ═══════ */
-document.addEventListener('DOMContentLoaded',function(){
-if(typeof d3==='undefined'){document.getElementById('philoGraph').innerHTML='<p style="text-align:center;padding:40px;color:var(--muted)">⚠️ 图谱引擎加载中... 如持续未显示，请刷新页面</p>';return}
-(function(){
+setTimeout(function(){
+  if(typeof d3==='undefined'){var c=document.getElementById('philoGraph');if(c)c.innerHTML='<p style="text-align:center;padding:40px;color:var(--muted)">⚠️ 图谱引擎未加载，请检查网络连接后刷新</p>';return}
   var container=document.getElementById('philoGraph');
-  var W=container.clientWidth,H=500;
-  if(W<640)H=380;
-
-  var nodes=[
-    {id:'duan',group:'person',label:'段永平',size:16,color:'#00d4ff'},
-    {id:'buffett',group:'person',label:'巴菲特',size:16,color:'#76b900'},
-    {id:'son',group:'person',label:'孙正义',size:16,color:'#f0c040'},
-    {id:'circle',group:'concept',label:'能力圈',size:11,color:'#a78bfa'},
-    {id:'moat',group:'concept',label:'护城河',size:11,color:'#a78bfa'},
-    {id:'timemachine',group:'concept',label:'时光机',size:11,color:'#a78bfa'},
-    {id:'margin',group:'concept',label:'安全边际',size:10,color:'#a78bfa'},
-    {id:'compound',group:'concept',label:'长期复利',size:10,color:'#a78bfa'},
-    {id:'vision',group:'concept',label:'300年愿景',size:10,color:'#a78bfa'},
-    {id:'bet',group:'concept',label:'集中押注',size:9,color:'#a78bfa'},
-    {id:'dcf',group:'method',label:'DCF估值',size:9,color:'#06b6d4'},
-    {id:'kelly',group:'method',label:'凯利公式',size:9,color:'#06b6d4'},
-    {id:'funnel',group:'method',label:'决策漏斗',size:12,color:'#ec4899'},
-    {id:'aapl',group:'case',label:'苹果',size:8,color:'#f59e0b'},
-    {id:'byd',group:'case',label:'比亚迪',size:8,color:'#f59e0b'},
-    {id:'arm',group:'case',label:'ARM',size:8,color:'#f59e0b'},
-    {id:'ntes',group:'case',label:'网易',size:8,color:'#f59e0b'}
-  ];
-
-  var links=[
-    {source:'duan',target:'circle',label:'核心原则'},
-    {source:'duan',target:'margin',label:'坚守'},
-    {source:'duan',target:'compound',label:'践行'},
-    {source:'buffett',target:'moat',label:'核心原则'},
-    {source:'buffett',target:'margin',label:'发明者'},
-    {source:'buffett',target:'compound',label:'终极信仰'},
-    {source:'son',target:'timemachine',label:'核心理论'},
-    {source:'son',target:'vision',label:'时间框架'},
-    {source:'son',target:'bet',label:'实践方式'},
-    {source:'duan',target:'buffett',label:'师从'},
-    {source:'circle',target:'moat',label:'互补'},
-    {source:'timemachine',target:'circle',label:'超越边界'},
-    {source:'margin',target:'bet',label:'约束'},
-    {source:'dcf',target:'margin',label:'量化'},
-    {source:'kelly',target:'bet',label:'优化'},
-    {source:'funnel',target:'timemachine',label:'第一层'},
-    {source:'funnel',target:'moat',label:'第二层'},
-    {source:'funnel',target:'circle',label:'第三层'},
-    {source:'funnel',target:'dcf',label:'第四层'},
-    {source:'funnel',target:'kelly',label:'第六层'},
-    {source:'duan',target:'aapl',label:'重仓'},
-    {source:'duan',target:'ntes',label:'100×'},
-    {source:'buffett',target:'aapl',label:'第一大持仓'},
-    {source:'buffett',target:'byd',label:'30×'},
-    {source:'son',target:'arm',label:'核心资产'}
-  ];
-
-  var svg=d3.select('#philoGraph').append('svg').attr('viewBox',[0,0,W,H]);
-  var g=svg.append('g');
-  svg.call(d3.zoom().scaleExtent([.3,4]).on('zoom',function(e){g.attr('transform',e.transform)}));
-
-  var sim=d3.forceSimulation(nodes)
-    .force('link',d3.forceLink(links).id(function(d){return d.id}).distance(100))
-    .force('charge',d3.forceManyBody().strength(-250))
-    .force('center',d3.forceCenter(W/2,H/2))
-    .force('collision',d3.forceCollide().radius(function(d){return d.size+6}));
-
-  var link=g.append('g').selectAll('line').data(links).join('line')
-    .attr('stroke','#3a3a5a').attr('stroke-width',1.2).attr('stroke-opacity',.5);
-
-  var linkLabel=g.append('g').selectAll('text').data(links).join('text')
-    .text(function(d){return d.label}).attr('font-size',8).attr('fill','#7878a0')
-    .attr('text-anchor','middle').attr('dy',-4);
-
-  var node=g.append('g').selectAll('g').data(nodes).join('g')
-    .call(d3.drag().on('start',function(e,d){if(!e.active)sim.alphaTarget(.3).restart();d.fx=d.x;d.fy=d.y})
-      .on('drag',function(e,d){d.fx=e.x;d.fy=e.y})
-      .on('end',function(e,d){if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null}))
-    .on('click',function(e,d){
-      e.stopPropagation();
-      node.select('circle').attr('opacity',function(n){return n.group===d.group||n.id===d.id?1:.15});
+  if(!container||container.clientWidth===0)return;
+  var W=container.clientWidth,H=500;if(W<640)H=380;
+    var nodes=[
+      {id:'duan',group:'person',label:'段永平',size:16,color:'#00d4ff'},
+      {id:'buffett',group:'person',label:'巴菲特',size:16,color:'#76b900'},
+      {id:'son',group:'person',label:'孙正义',size:16,color:'#f0c040'},
+      {id:'circle',group:'concept',label:'能力圈',size:11,color:'#a78bfa'},
+      {id:'moat',group:'concept',label:'护城河',size:11,color:'#a78bfa'},
+      {id:'timemachine',group:'concept',label:'时光机',size:11,color:'#a78bfa'},
+      {id:'margin',group:'concept',label:'安全边际',size:10,color:'#a78bfa'},
+      {id:'compound',group:'concept',label:'长期复利',size:10,color:'#a78bfa'},
+      {id:'vision',group:'concept',label:'300年愿景',size:10,color:'#a78bfa'},
+      {id:'bet',group:'concept',label:'集中押注',size:9,color:'#a78bfa'},
+      {id:'dcf',group:'method',label:'DCF估值',size:9,color:'#06b6d4'},
+      {id:'kelly',group:'method',label:'凯利公式',size:9,color:'#06b6d4'},
+      {id:'funnel',group:'method',label:'决策漏斗',size:12,color:'#ec4899'},
+      {id:'aapl',group:'case',label:'苹果',size:8,color:'#f59e0b'},
+      {id:'byd',group:'case',label:'比亚迪',size:8,color:'#f59e0b'},
+      {id:'arm',group:'case',label:'ARM',size:8,color:'#f59e0b'},
+      {id:'ntes',group:'case',label:'网易',size:8,color:'#f59e0b'}
+    ];
+    var links=[
+      {source:'duan',target:'circle',label:'核心原则'},
+      {source:'duan',target:'margin',label:'坚守'},
+      {source:'duan',target:'compound',label:'践行'},
+      {source:'buffett',target:'moat',label:'核心原则'},
+      {source:'buffett',target:'margin',label:'发明者'},
+      {source:'buffett',target:'compound',label:'终极信仰'},
+      {source:'son',target:'timemachine',label:'核心理论'},
+      {source:'son',target:'vision',label:'时间框架'},
+      {source:'son',target:'bet',label:'实践方式'},
+      {source:'duan',target:'buffett',label:'师从'},
+      {source:'circle',target:'moat',label:'互补'},
+      {source:'timemachine',target:'circle',label:'超越边界'},
+      {source:'margin',target:'bet',label:'约束'},
+      {source:'dcf',target:'margin',label:'量化'},
+      {source:'kelly',target:'bet',label:'优化'},
+      {source:'funnel',target:'timemachine',label:'第一层'},
+      {source:'funnel',target:'moat',label:'第二层'},
+      {source:'funnel',target:'circle',label:'第三层'},
+      {source:'funnel',target:'dcf',label:'第四层'},
+      {source:'funnel',target:'kelly',label:'第六层'},
+      {source:'duan',target:'aapl',label:'重仓'},
+      {source:'duan',target:'ntes',label:'100×'},
+      {source:'buffett',target:'aapl',label:'第一大持仓'},
+      {source:'buffett',target:'byd',label:'30×'},
+      {source:'son',target:'arm',label:'核心资产'}
+    ];
+    var svg=d3.select('#philoGraph').append('svg').attr('viewBox',[0,0,W,H]);
+    var g=svg.append('g');
+    svg.call(d3.zoom().scaleExtent([.3,4]).on('zoom',function(e){g.attr('transform',e.transform)}));
+    var sim=d3.forceSimulation(nodes)
+      .force('link',d3.forceLink(links).id(function(d){return d.id}).distance(100))
+      .force('charge',d3.forceManyBody().strength(-250))
+      .force('center',d3.forceCenter(W/2,H/2))
+      .force('collision',d3.forceCollide().radius(function(d){return d.size+6}));
+    var link=g.append('g').selectAll('line').data(links).join('line')
+      .attr('stroke','#3a3a5a').attr('stroke-width',1.2).attr('stroke-opacity',.5);
+    var linkLabel=g.append('g').selectAll('text').data(links).join('text')
+      .text(function(d){return d.label}).attr('font-size',8).attr('fill','#7878a0').attr('text-anchor','middle').attr('dy',-4);
+    var node=g.append('g').selectAll('g').data(nodes).join('g')
+      .call(d3.drag().on('start',function(e,d){if(!e.active)sim.alphaTarget(.3).restart();d.fx=d.x;d.fy=d.y})
+        .on('drag',function(e,d){d.fx=e.x;d.fy=e.y})
+        .on('end',function(e,d){if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null}))
+      .on('click',function(e,d){e.stopPropagation();
+        node.select('circle').attr('opacity',function(n){return n.group===d.group||n.id===d.id?1:.15})});
+    node.append('circle').attr('r',function(d){return d.size}).attr('fill',function(d){return d.color}).attr('stroke','#1a1a28').attr('stroke-width',2).style('cursor','pointer');
+    node.append('text').text(function(d){return d.label}).attr('font-size',function(d){return Math.max(8,d.size*.65)}).attr('fill','#e0e0ee').attr('text-anchor','middle').attr('dy',function(d){return d.size+12}).style('pointer-events','none');
+    svg.on('click',function(){node.select('circle').attr('opacity',1)});
+    sim.on('tick',function(){
+      link.attr('x1',function(d){return d.source.x}).attr('y1',function(d){return d.source.y})
+          .attr('x2',function(d){return d.target.x}).attr('y2',function(d){return d.target.y});
+      linkLabel.attr('x',function(d){return (d.source.x+d.target.x)/2}).attr('y',function(d){return (d.source.y+d.target.y)/2});
+      node.attr('transform',function(d){return'translate('+d.x+','+d.y+')'})
     });
-
-  node.append('circle').attr('r',function(d){return d.size})
-    .attr('fill',function(d){return d.color}).attr('stroke','#1a1a28').attr('stroke-width',2)
-    .style('cursor','pointer');
-
-  node.append('text').text(function(d){return d.label})
-    .attr('font-size',function(d){return Math.max(8,d.size*.65)})
-    .attr('fill','#e0e0ee').attr('text-anchor','middle')
-    .attr('dy',function(d){return d.size+12}).style('pointer-events','none');
-
-  svg.on('click',function(){
-    node.select('circle').attr('opacity',1);
-  });
-
-  sim.on('tick',function(){
-    link.attr('x1',function(d){return d.source.x}).attr('y1',function(d){return d.source.y})
-        .attr('x2',function(d){return d.target.x}).attr('y2',function(d){return d.target.y});
-    linkLabel.attr('x',function(d){return (d.source.x+d.target.x)/2})
-             .attr('y',function(d){return (d.source.y+d.target.y)/2});
-    node.attr('transform',function(d){return'translate('+d.x+','+d.y+')'});
-  });
-
-  window.addEventListener('resize',function(){
-    W=container.clientWidth;H=W<640?380:500;
-    svg.attr('viewBox',[0,0,W,H]);
-    sim.force('center',d3.forceCenter(W/2,H/2)).alpha(.3).restart();
-  });
-})();
-}); // DOMContentLoaded guard
+    window.addEventListener('resize',function(){
+      W=container.clientWidth;H=W<640?380:500;
+      svg.attr('viewBox',[0,0,W,H]);
+      sim.force('center',d3.forceCenter(W/2,H/2)).alpha(.3).restart()
+    });
+},500);
 </script>
 
 </body>
