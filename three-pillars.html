@@ -2,890 +2,800 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0a0a0f">
-<meta name="color-scheme" content="dark">
-
-<!-- ═══════ #4 SEO/OG 全栈 ═══════ -->
-<title>三大投资哲学 · 碰撞与融合 — 段永平 × 巴菲特 × 孙正义</title>
-<meta name="description" content="三大投资哲学深度碰撞：段永平的「本分」× 巴菲特的「护城河」× 孙正义的「时光机」。投资决策漏斗 · 案例回溯 · 模拟验证。">
-<meta property="og:title" content="三大投资哲学 · 碰撞与融合">
-<meta property="og:description" content="段永平的「本分」× 巴菲特的「护城河」× 孙正义的「时光机」— 谁能在下一轮科技浪潮中胜出？">
-<meta property="og:url" content="https://jasoneip01-pixel.github.io/next-nvidia/three-pillars.html">
-<meta property="og:type" content="article">
-<meta property="og:image" content="https://image.pollinations.ai/prompt/three%20investment%20philosophy%20pillars%20collision%20dark%20theme%20abstract%20dramatic%20professional?width=1200&height=630&nologo=true">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:locale" content="zh_CN">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="三大投资哲学 · 碰撞与融合">
-<meta name="twitter:description" content="段永平 × 巴菲特 × 孙正义 — 投资决策框架的比较与融合">
-<meta name="twitter:image" content="https://image.pollinations.ai/prompt/three%20investment%20philosophy%20pillars%20collision%20dark%20theme?width=1200&height=630&nologo=true">
-<link rel="canonical" href="https://jasoneip01-pixel.github.io/next-nvidia/three-pillars.html">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
-<!-- D3 loaded deferred to avoid blocking page render (#7) -->
-<script src="https://d3js.org/d3.v7.min.js" defer></script>
-
-<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三大投资哲学 · 碰撞与融合</title>
 <style>
-/* ═══════════════════════════════════════
-   #1 SEMANTIC TOKEN BASE — Dark Education v2
-   ═══════════════════════════════════════ */
 :root {
-  /* Semantic tokens (oklch) */
-  --success:     oklch(0.55 0.15 160);
-  --warning:     oklch(0.65 0.18 85);
-  --destructive:  oklch(0.45 0.2 20);
-  --info:        oklch(0.55 0.1 240);
-
-  /* Dark Education theme */
-  --bg:          #0a0a0f;
-  --surface:     #12121a;
-  --card:        #1a1a28;
-  --border:      #2a2a3e;
-  --text:        #e0e0ee;
-  --text2:       #b0b0c8;
-  --muted:       #7878a0;
-
-  /* Three Pillars accent colors */
-  --duan:        #00d4ff;   /* 段永平 — 理性之青 */
-  --buffett:     #76b900;   /* 巴菲特 — 价值之绿 */
-  --son:         #f0c040;   /* 孙正义 — 远见之金 */
-  --accent:      #8b5cf6;
-  --radius:      16px;
-  --radius-sm:   10px;
-  --ease:        cubic-bezier(.25,.1,.25,1);
+  --bg: #0a0a0f;
+  --surface: #13131a;
+  --surface2: #1a1a24;
+  --border: #2a2a3a;
+  --text: #e0e0e8;
+  --text2: #9090a8;
+  --nvda: #76b900;
+  --accent: #00d4ff;
+  --warn: #ff6b6b;
+  --gold: #f0c040;
+  --duan: #00d4ff;
+  --buffett: #76b900;
+  --son: #f0c040;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:17px;background:var(--bg);color:var(--text)}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Noto Sans SC',sans-serif;
-  line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; line-height:1.7; overflow-x:hidden; }
+#starfield { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+section, nav, .tab-content, .footer { position:relative; z-index:1; }
 
-/* ═══════ #8 KEYBOARD FOCUS ═══════ */
-:focus-visible{outline:2px solid var(--duan);outline-offset:2px;border-radius:4px}
-.skip-link{position:absolute;top:-100px;left:16px;z-index:200;padding:8px 16px;
-  background:var(--duan);color:#000;border-radius:8px;font-weight:700;font-size:.85rem}
-.skip-link:focus{top:16px}
+/* ── Scroll Reveal ── */
+.reveal { opacity:0; transform:translateY(28px); transition:opacity 0.6s cubic-bezier(0.22,0.61,0.36,1), transform 0.6s cubic-bezier(0.22,0.61,0.36,1); }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay:0.08s; }
+.reveal-delay-2 { transition-delay:0.16s; }
+.reveal-delay-3 { transition-delay:0.24s; }
+.reveal-delay-4 { transition-delay:0.32s; }
+.reveal-delay-5 { transition-delay:0.40s; }
 
-/* ═══════ #5 CANVAS STARFIELD ═══════ */
-#starfield{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-section,nav,.tab-content,footer,.skip-link{position:relative;z-index:1}
-
-/* ═══════ SCROLL REVEAL ═══════ */
-.reveal{opacity:0;transform:translateY(28px);
-  transition:opacity .6s var(--ease),transform .6s var(--ease)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-d1{transition-delay:.08s}.reveal-d2{transition-delay:.16s}
-.reveal-d3{transition-delay:.24s}.reveal-d4{transition-delay:.32s}
-.reveal-d5{transition-delay:.40s}
-
-/* ═══════ FUNNEL CASCADE ═══════ */
-.funnel-layer{animation:funnelDrop .5s var(--ease) both}
-@keyframes funnelDrop{
-  from{opacity:0;transform:translateY(-16px) scale(.96)}
-  to{opacity:1;transform:translateY(0) scale(1)}
-}
-.f1{animation-delay:.05s}.f2{animation-delay:.12s}.f3{animation-delay:.19s}
-.f4{animation-delay:.26s}.f5{animation-delay:.33s}.f6{animation-delay:.40s}.f7{animation-delay:.47s}
-
-/* ═══════ PILLAR GLOW ═══════ */
-.pillar.duan{animation:pillarGlowDuan 4s ease-in-out infinite}
-.pillar.buffett{animation:pillarGlowBuffett 4s ease-in-out infinite;animation-delay:.6s}
-.pillar.son{animation:pillarGlowSon 4s ease-in-out infinite;animation-delay:1.2s}
-@keyframes pillarGlowDuan{
-  0%,100%{box-shadow:0 0 12px rgba(0,212,255,.04)}
-  50%{box-shadow:0 0 24px rgba(0,212,255,.10)}
-}
-@keyframes pillarGlowBuffett{
-  0%,100%{box-shadow:0 0 12px rgba(118,185,0,.04)}
-  50%{box-shadow:0 0 24px rgba(118,185,0,.10)}
-}
-@keyframes pillarGlowSon{
-  0%,100%{box-shadow:0 0 12px rgba(240,192,64,.04)}
-  50%{box-shadow:0 0 24px rgba(240,192,64,.10)}
+/* ── Funnel Cascade ── */
+.funnel-layer { animation:funnelDrop 0.5s cubic-bezier(0.22,0.61,0.36,1) both; }
+.f1 { animation-delay:0.05s; }
+.f2 { animation-delay:0.12s; }
+.f3 { animation-delay:0.19s; }
+.f4 { animation-delay:0.26s; }
+.f5 { animation-delay:0.33s; }
+.f6 { animation-delay:0.40s; }
+.f7 { animation-delay:0.47s; }
+@keyframes funnelDrop {
+  from { opacity:0; transform:translateY(-16px) scale(0.96); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
 }
 
-/* ═══════ SIMULATOR RESULT ═══════ */
-.sim-result.revealed{display:block;animation:resultReveal .5s var(--ease)}
-@keyframes resultReveal{
-  from{opacity:0;transform:translateY(12px) scale(.97)}
-  to{opacity:1;transform:translateY(0) scale(1)}
+/* ── Pillar Breathing Glow ── */
+.pillar.duan  { animation:pillarGlowDuan  4s ease-in-out infinite; }
+.pillar.buffett { animation:pillarGlowBuffett 4s ease-in-out infinite; animation-delay:0.6s; }
+.pillar.son { animation:pillarGlowSon 4s ease-in-out infinite; animation-delay:1.2s; }
+@keyframes pillarGlowDuan {
+  0%,100% { box-shadow:0 0 12px rgba(0,212,255,0.04); }
+  50%     { box-shadow:0 0 24px rgba(0,212,255,0.10); }
+}
+@keyframes pillarGlowBuffett {
+  0%,100% { box-shadow:0 0 12px rgba(118,185,0,0.04); }
+  50%     { box-shadow:0 0 24px rgba(118,185,0,0.10); }
+}
+@keyframes pillarGlowSon {
+  0%,100% { box-shadow:0 0 12px rgba(240,192,64,0.04); }
+  50%     { box-shadow:0 0 24px rgba(240,192,64,0.10); }
 }
 
-/* ═══════ #6 CONFETTI ═══════ */
-.confetti-piece{position:fixed;z-index:999;pointer-events:none;
-  animation:confettiFall 1.5s ease-out forwards}
-@keyframes confettiFall{
-  0%{opacity:1;transform:translateY(0) rotate(0deg) scale(1)}
-  100%{opacity:0;transform:translateY(100vh) rotate(720deg) scale(.3)}
+/* ── Simulator Result Reveal ── */
+.sim-result.revealed { display:block; animation:resultReveal 0.5s cubic-bezier(0.22,0.61,0.36,1); }
+@keyframes resultReveal {
+  from { opacity:0; transform:translateY(12px) scale(0.97); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
 }
 
-/* ═══════ HERO ═══════ */
-.hero{text-align:center;padding:clamp(36px,8vw,80px) clamp(16px,4vw,24px) clamp(28px,6vw,60px);
-  position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;
-  background:radial-gradient(ellipse at 30% 0%,rgba(0,212,255,.06) 0%,transparent 50%),
-             radial-gradient(ellipse at 70% 0%,rgba(118,185,0,.06) 0%,transparent 50%),
-             radial-gradient(ellipse at 50% 100%,rgba(240,192,64,.04) 0%,transparent 50%);
-  pointer-events:none}
-.hero h1{font-size:clamp(26px,5vw,52px);font-weight:800;
-  background:linear-gradient(135deg,var(--duan) 0%,var(--buffett) 50%,var(--son) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  line-height:1.2}
-.hero .sub{color:var(--text2);font-size:clamp(14px,2.5vw,18px);margin-top:12px}
+/* Hero */
+.hero { text-align:center; padding:clamp(36px,8vw,80px) clamp(16px,4vw,24px) clamp(28px,6vw,60px); position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; top:0; left:0; right:0; bottom:0; background:radial-gradient(ellipse at 30% 0%, rgba(0,212,255,0.06) 0%, transparent 50%), radial-gradient(ellipse at 70% 0%, rgba(118,185,0,0.06) 0%, transparent 50%), radial-gradient(ellipse at 50% 100%, rgba(240,192,64,0.04) 0%, transparent 50%); pointer-events:none; }
+.hero h1 { font-size:clamp(26px,5vw,52px); font-weight:800; background:linear-gradient(135deg, var(--duan) 0%, var(--nvda) 50%, var(--gold) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1.2; }
+.hero .sub { color:var(--text2); font-size:clamp(14px,2.5vw,18px); margin-top:12px; }
 
-/* ═══════ #2 GLASS PILLARS ═══════ */
-.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));
-  gap:20px;max-width:1200px;margin:0 auto 60px;padding:0 clamp(12px,4vw,24px)}
-.pillar{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-  padding:clamp(20px,4vw,32px);cursor:pointer;transition:all .3s;
-  position:relative;overflow:hidden;
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.pillar:hover{transform:translateY(-4px)}
-.pillar.duan:hover{border-color:var(--duan);box-shadow:0 8px 32px rgba(0,212,255,.1)}
-.pillar.buffett:hover{border-color:var(--buffett);box-shadow:0 8px 32px rgba(118,185,0,.1)}
-.pillar.son:hover{border-color:var(--son);box-shadow:0 8px 32px rgba(240,192,64,.1)}
-.pillar .icon{font-size:40px;margin-bottom:16px}
-.pillar h2{font-size:22px;margin-bottom:4px}
-.pillar .tagline{color:var(--text2);font-size:14px;margin-bottom:16px}
-.pillar .traits{display:flex;flex-wrap:wrap;gap:6px}
-.pillar .trait{font-size:12px;padding:4px 10px;border-radius:12px;
-  background:var(--surface);color:var(--text2)}
-.pillar.duan .trait{border:1px solid rgba(0,212,255,.2)}
-.pillar.buffett .trait{border:1px solid rgba(118,185,0,.2)}
-.pillar.son .trait{border:1px solid rgba(240,192,64,.2)}
-.pillar .record{margin-top:16px;font-size:clamp(12px,1.5vw,13px);color:var(--text2)}
-.pillar .record strong{color:var(--text)}
-@media(max-width:480px){.pillars{grid-template-columns:1fr}}
-
-/* ═══════ #8 TAB NAV + KEYBOARD ═══════ */
-.tabs-nav{display:flex;justify-content:center;gap:clamp(4px,1vw,8px);
-  margin:0 auto 40px;max-width:1200px;padding:0 clamp(12px,4vw,24px);flex-wrap:wrap}
-.tab-btn{padding:clamp(8px,2vw,12px) clamp(16px,3vw,28px);border-radius:24px;
-  border:1px solid var(--border);background:var(--surface);color:var(--text2);
-  cursor:pointer;font-size:clamp(13px,1.8vw,15px);transition:all .3s;white-space:nowrap}
-.tab-btn:hover,.tab-btn:focus-visible{border-color:var(--accent);color:var(--text)}
-.tab-btn.active.duan{background:rgba(0,212,255,.1);border-color:var(--duan);color:var(--duan)}
-.tab-btn.active.buffett{background:rgba(118,185,0,.1);border-color:var(--buffett);color:var(--buffett)}
-.tab-btn.active.son{background:rgba(240,192,64,.1);border-color:var(--son);color:var(--son)}
-.tab-btn.active.all{background:rgba(255,255,255,.05);border-color:var(--text);color:var(--text)}
-.tab-btn[role="tab"][aria-selected="true"]{font-weight:700}
-.tab-content{display:none;max-width:1200px;margin:0 auto 60px;padding:0 24px}
-.tab-content.active{display:block;animation:fadeIn .4s var(--ease)}
-@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-
-/* ═══════ PHILOSOPHY CARDS ═══════ */
-.philo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));
-  gap:20px;margin-bottom:40px}
-.philo-card{background:var(--card);border:1px solid var(--border);
-  border-radius:var(--radius-sm);padding:clamp(18px,3vw,28px);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  transition:border-color .3s}
-.philo-card:hover{border-color:var(--accent)}
-.philo-card h3{font-size:clamp(15px,2vw,18px);margin-bottom:12px;
-  display:flex;align-items:center;gap:8px}
-@media(max-width:480px){.philo-grid{grid-template-columns:1fr}}
-.philo-card h3 .num{width:28px;height:28px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
-.duan .num{background:rgba(0,212,255,.15);color:var(--duan)}
-.buffett .num{background:rgba(118,185,0,.15);color:var(--buffett)}
-.son .num{background:rgba(240,192,64,.15);color:var(--son)}
-.philo-card p{color:var(--text2);font-size:14px;line-height:1.7}
-.philo-card .quote{margin-top:12px;padding:12px;background:var(--surface);
-  border-left:3px solid var(--border);border-radius:0 8px 8px 0;
-  font-style:italic;font-size:13px;color:var(--text2)}
-
-/* ═══════ #3 ACCORDION ═══════ */
-.accordion{border:1px solid var(--border);border-radius:var(--radius-sm);
-  overflow:hidden;margin-bottom:12px;background:var(--card);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.accordion-header{display:flex;align-items:center;gap:12px;padding:16px 20px;
-  background:transparent;cursor:pointer;border:none;width:100%;text-align:left;
-  font:inherit;color:var(--text);font-weight:600;font-size:.95rem;
-  transition:background .2s}
-.accordion-header:hover{background:var(--surface)}
-.accordion-header .arrow{flex:none;transition:transform .3s var(--ease);
-  font-size:.7rem;color:var(--muted)}
-.accordion.open .accordion-header .arrow{transform:rotate(180deg)}
-.accordion-body{max-height:0;overflow:hidden;transition:max-height .4s var(--ease)}
-.accordion.open .accordion-body{max-height:600px}
-.accordion-body-inner{padding:0 20px 20px;color:var(--text2);font-size:.9rem;line-height:1.8}
-
-/* ═══════ FUNNEL ═══════ */
-.funnel-section{background:var(--card);border:1px solid var(--border);
-  border-radius:var(--radius);padding:clamp(20px,4vw,40px);
-  max-width:1200px;margin:0 auto 60px;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.funnel-section h2{text-align:center;font-size:24px;margin-bottom:32px}
-.funnel{max-width:700px;margin:0 auto}
-.funnel-layer{display:flex;align-items:center;gap:clamp(8px,1.5vw,16px);
-  padding:clamp(10px,2vw,14px) clamp(12px,2vw,20px);margin-bottom:8px;
-  border-radius:10px;cursor:pointer;transition:all .3s;position:relative;flex-wrap:wrap}
-.funnel-layer:hover{filter:brightness(1.15)}
-.funnel-layer .layer-icon{font-size:clamp(16px,2vw,20px);
-  width:clamp(28px,4vw,40px);text-align:center;flex-shrink:0}
-.funnel-layer .layer-num{font-size:clamp(10px,1.2vw,12px);font-weight:700;
-  width:clamp(20px,2.5vw,24px);height:clamp(20px,2.5vw,24px);border-radius:50%;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  background:rgba(255,255,255,.1)}
-.funnel-layer .layer-name{font-weight:600;font-size:clamp(12px,1.6vw,15px);
-  width:clamp(80px,15vw,120px);flex-shrink:0}
-.funnel-layer .layer-desc{font-size:clamp(11px,1.4vw,13px);color:var(--text2);
-  flex:1;min-width:0}
-.funnel-layer .layer-source{font-size:clamp(10px,1.2vw,11px);color:var(--text2);
-  opacity:.6;width:clamp(50px,8vw,70px);text-align:right;flex-shrink:0}
-@media(max-width:480px){
-  .funnel-layer .layer-desc,.funnel-layer .layer-source{display:none}
+/* Three Pillars */
+.pillars { display:grid; grid-template-columns: repeat(auto-fit, minmax(min(100%,320px),1fr)); gap:20px; max-width:1200px; margin:0 auto 60px; padding:0 clamp(12px,4vw,24px); }
+.pillar { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:clamp(20px,4vw,32px); cursor:pointer; transition:all 0.3s; position:relative; overflow:hidden; }
+.pillar:hover { transform:translateY(-4px); border-color:var(--accent); box-shadow:0 8px 32px rgba(0,212,255,0.08); }
+@media (max-width:480px) {
+  .pillars { grid-template-columns: 1fr; }
 }
-.f1{background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);width:95%}
-.f2{background:rgba(240,192,64,.08);border:1px solid rgba(240,192,64,.2);
-  width:88%;margin-left:auto;margin-right:auto}
-.f3{background:rgba(118,185,0,.08);border:1px solid rgba(118,185,0,.2);
-  width:80%;margin-left:auto;margin-right:auto}
-.f4{background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.1);
-  width:72%;margin-left:auto;margin-right:auto}
-.f5{background:rgba(255,255,255,.03);border:1px solid var(--border);
-  width:64%;margin-left:auto;margin-right:auto}
-.f6{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);
-  width:56%;margin-left:auto;margin-right:auto}
-.f7{background:rgba(240,192,64,.05);border:1px solid rgba(240,192,64,.15);
-  width:48%;margin-left:auto;margin-right:auto}
+.pillar.duan:hover { border-color:var(--duan); box-shadow:0 8px 32px rgba(0,212,255,0.1); }
+.pillar.buffett:hover { border-color:var(--nvda); box-shadow:0 8px 32px rgba(118,185,0,0.1); }
+.pillar.son:hover { border-color:var(--gold); box-shadow:0 8px 32px rgba(240,192,64,0.1); }
+.pillar .icon { font-size:40px; margin-bottom:16px; }
+.pillar h2 { font-size:22px; margin-bottom:4px; }
+.pillar .tagline { color:var(--text2); font-size:14px; margin-bottom:16px; }
+.pillar .traits { display:flex; flex-wrap:wrap; gap:6px; }
+.pillar .trait { font-size:12px; padding:4px 10px; border-radius:12px; background:var(--surface2); color:var(--text2); }
+.pillar.duan .trait { border:1px solid rgba(0,212,255,0.2); }
+.pillar.buffett .trait { border:1px solid rgba(118,185,0,0.2); }
+.pillar.son .trait { border:1px solid rgba(240,192,64,0.2); }
+.pillar .record { margin-top:16px; font-size:clamp(12px,1.5vw,13px); color:var(--text2); }
+.pillar .record strong { color:var(--text); }
 
-/* ═══════ TABLES ═══════ */
-.data-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
-.data-table th{background:var(--surface);padding:12px 16px;text-align:left;
-  font-weight:600;border-bottom:2px solid var(--border)}
-.data-table td{padding:12px 16px;border-bottom:1px solid var(--border)}
-.data-table tr:hover td{background:rgba(255,255,255,.02)}
-.pass{color:var(--success)}.fail{color:var(--destructive)}.maybe{color:var(--warning)}
+/* Tabs */
+.tabs-nav { display:flex; justify-content:center; gap:clamp(4px,1vw,8px); margin:0 auto 40px; max-width:1200px; padding:0 clamp(12px,4vw,24px); flex-wrap:wrap; }
+.tab-btn { padding:clamp(8px,2vw,12px) clamp(16px,3vw,28px); border-radius:24px; border:1px solid var(--border); background:var(--surface); color:var(--text2); cursor:pointer; font-size:clamp(13px,1.8vw,15px); transition:all 0.3s; white-space:nowrap; }
+.tab-btn:hover { border-color:var(--accent); color:var(--text); }
+.tab-btn.active.duan { background:rgba(0,212,255,0.1); border-color:var(--duan); color:var(--duan); }
+.tab-btn.active.buffett { background:rgba(118,185,0,0.1); border-color:var(--nvda); color:var(--nvda); }
+.tab-btn.active.son { background:rgba(240,192,64,0.1); border-color:var(--gold); color:var(--gold); }
+.tab-btn.active.all { background:rgba(255,255,255,0.05); border-color:var(--text); color:var(--text); }
 
-/* ═══════ CASE CARDS ═══════ */
-.case-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
-.case-card{background:var(--surface);border:1px solid var(--border);
-  border-radius:var(--radius-sm);padding:clamp(14px,2.5vw,20px);
-  transition:transform .2s,border-color .2s}
-.case-card:hover{transform:translateY(-2px);border-color:var(--accent)}
-@media(max-width:480px){.case-grid{grid-template-columns:1fr}}
-.case-card .case-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.case-card .case-name{font-weight:600}
-.case-card .case-return{font-size:13px;padding:2px 8px;border-radius:8px}
-.case-card .case-return.win{background:rgba(16,185,129,.1);color:var(--success)}
-.case-card .case-return.lose{background:rgba(239,68,68,.1);color:var(--destructive)}
-.case-card .case-lesson{font-size:13px;color:var(--text2);line-height:1.6}
+/* Tab Content */
+.tab-content { display:none; max-width:1200px; margin:0 auto; padding:0 24px; }
+.tab-content.active { display:block; }
 
-/* ═══════ MATRIX ═══════ */
-.matrix{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.matrix table{min-width:600px}
-.matrix th:first-child,.matrix td:first-child{position:sticky;left:0;
-  background:var(--card);z-index:1}
-@media(max-width:640px){
-  .matrix table{min-width:500px}
-  .matrix th,.matrix td{padding:8px 10px;font-size:12px}
+/* Philosophy cards */
+.philo-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(min(100%,340px),1fr)); gap:20px; margin-bottom:40px; }
+.philo-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:clamp(18px,3vw,28px); }
+.philo-card h3 { font-size:clamp(15px,2vw,18px); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+@media (max-width:480px) {
+  .philo-grid { grid-template-columns: 1fr; }
+}
+.philo-card h3 .num { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; }
+.duan .num { background:rgba(0,212,255,0.15); color:var(--duan); }
+.buffett .num { background:rgba(118,185,0,0.15); color:var(--nvda); }
+.son .num { background:rgba(240,192,64,0.15); color:var(--gold); }
+.philo-card p { color:var(--text2); font-size:14px; }
+.philo-card .quote { margin-top:12px; padding:12px; background:var(--surface2); border-left:3px solid var(--border); border-radius:0 8px 8px 0; font-style:italic; font-size:13px; color:var(--text2); }
+
+/* Funnel visualization */
+.funnel-section { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:clamp(20px,4vw,40px); max-width:1200px; margin:0 auto 60px; }
+.funnel-section h2 { text-align:center; font-size:24px; margin-bottom:32px; }
+.funnel { max-width:700px; margin:0 auto; }
+.funnel-layer { display:flex; align-items:center; gap:clamp(8px,1.5vw,16px); padding:clamp(10px,2vw,14px) clamp(12px,2vw,20px); margin-bottom:8px; border-radius:10px; cursor:pointer; transition:all 0.3s; position:relative; flex-wrap:wrap; }
+.funnel-layer:hover { filter:brightness(1.1); }
+.funnel-layer .layer-icon { font-size:clamp(16px,2vw,20px); width:clamp(28px,4vw,40px); text-align:center; flex-shrink:0; }
+.funnel-layer .layer-num { font-size:clamp(10px,1.2vw,12px); font-weight:700; width:clamp(20px,2.5vw,24px); height:clamp(20px,2.5vw,24px); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:rgba(255,255,255,0.1); }
+.funnel-layer .layer-name { font-weight:600; font-size:clamp(12px,1.6vw,15px); width:clamp(80px,15vw,120px); flex-shrink:0; }
+.funnel-layer .layer-desc { font-size:clamp(11px,1.4vw,13px); color:var(--text2); flex:1; min-width:0; }
+.funnel-layer .layer-source { font-size:clamp(10px,1.2vw,11px); color:var(--text2); opacity:0.6; width:clamp(50px,8vw,70px); text-align:right; flex-shrink:0; }
+@media (max-width:480px) {
+  .funnel-layer .layer-desc { display:none; }
+  .funnel-layer .layer-source { display:none; }
+}
+.f1 { background:rgba(0,212,255,0.08); border:1px solid rgba(0,212,255,0.2); width:95%; }
+.f2 { background:rgba(240,192,64,0.08); border:1px solid rgba(240,192,64,0.2); width:88%; margin-left:auto; margin-right:auto; }
+.f3 { background:rgba(118,185,0,0.08); border:1px solid rgba(118,185,0,0.2); width:80%; margin-left:auto; margin-right:auto; }
+.f4 { background:rgba(0,212,255,0.05); border:1px solid rgba(0,212,255,0.1); width:72%; margin-left:auto; margin-right:auto; }
+.f5 { background:rgba(255,255,255,0.03); border:1px solid var(--border); width:64%; margin-left:auto; margin-right:auto; }
+.f6 { background:rgba(255,107,107,0.05); border:1px solid rgba(255,107,107,0.15); width:56%; margin-left:auto; margin-right:auto; }
+.f7 { background:rgba(240,192,64,0.05); border:1px solid rgba(240,192,64,0.15); width:48%; margin-left:auto; margin-right:auto; }
+
+/* Tables */
+.data-table { width:100%; border-collapse:collapse; margin:24px 0; font-size:14px; }
+.data-table th { background:var(--surface2); padding:12px 16px; text-align:left; font-weight:600; border-bottom:2px solid var(--border); }
+.data-table td { padding:12px 16px; border-bottom:1px solid var(--border); }
+.data-table tr:hover td { background:rgba(255,255,255,0.02); }
+.pass { color:var(--nvda); }
+.fail { color:var(--warn); }
+.maybe { color:var(--gold); }
+
+/* Case Cards */
+.case-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(min(100%,280px),1fr)); gap:16px; }
+.case-card { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:clamp(14px,2.5vw,20px); }
+@media (max-width:480px) {
+  .case-grid { grid-template-columns: 1fr; }
+}
+.case-card .case-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.case-card .case-name { font-weight:600; }
+.case-card .case-return { font-size:13px; padding:2px 8px; border-radius:8px; }
+.case-card .case-return.win { background:rgba(118,185,0,0.1); color:var(--nvda); }
+.case-card .case-return.lose { background:rgba(255,107,107,0.1); color:var(--warn); }
+.case-card .case-lesson { font-size:13px; color:var(--text2); }
+
+/* Comparison Matrix */
+.matrix { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.matrix table { min-width:600px; }
+.matrix th:first-child, .matrix td:first-child { position:sticky; left:0; background:var(--surface); z-index:1; }
+@media (max-width:640px) {
+  .matrix table { min-width:500px; }
+  .matrix th, .matrix td { padding:8px 10px; font-size:12px; }
 }
 
-/* ═══════ #6 SIMULATOR ENHANCED ═══════ */
-.sim{background:var(--card);border:1px solid var(--border);
-  border-radius:var(--radius);padding:clamp(20px,4vw,40px);
-  max-width:700px;margin:0 auto 60px;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.sim h2{text-align:center;font-size:clamp(18px,2.5vw,22px);margin-bottom:8px}
-.sim .sim-sub{text-align:center;color:var(--text2);
-  font-size:clamp(12px,1.6vw,14px);margin-bottom:24px}
-.sim input{width:100%;padding:clamp(10px,2vw,14px) clamp(14px,2vw,18px);
-  background:var(--surface);border:1px solid var(--border);border-radius:10px;
-  color:var(--text);font-size:clamp(14px,2vw,16px);margin-bottom:12px;
-  transition:border-color .2s}
-.sim input:focus{outline:none;border-color:var(--duan)}
-.sim-btn{display:block;width:100%;padding:clamp(10px,2vw,14px);border:none;
-  border-radius:10px;font-size:clamp(14px,2vw,16px);font-weight:600;cursor:pointer;
-  margin-bottom:24px;background:linear-gradient(135deg,var(--duan),var(--buffett));color:#000;
-  transition:opacity .2s,transform .1s}
-.sim-btn:hover{opacity:.9}.sim-btn:active{transform:scale(.98)}
-.sim-result{display:none}
-.sim-result .verdict{font-size:clamp(15px,2vw,18px);font-weight:700;
-  margin-bottom:16px;text-align:center}
-.sim-result .breakdown{display:grid;gap:10px}
-.sim-result .breakdown .row{display:flex;justify-content:space-between;
-  align-items:center;padding:10px 14px;background:var(--surface);
-  border-radius:8px;gap:8px;transition:background .2s}
-.sim-result .breakdown .row:hover{background:var(--border)}
-.sim-result .breakdown .row .investor{font-weight:600;
-  width:clamp(60px,15vw,80px);flex-shrink:0}
-.sim-result .breakdown .row .signal{padding:4px 12px;border-radius:12px;
-  font-size:clamp(11px,1.5vw,13px);font-weight:600;white-space:nowrap;flex-shrink:0}
-.signal-buy{background:rgba(16,185,129,.15);color:var(--success)}
-.signal-skip{background:rgba(239,68,68,.15);color:var(--destructive)}
-.signal-wait{background:rgba(245,158,11,.15);color:var(--warning)}
-.sim-history{margin-top:20px;border-top:1px solid var(--border);padding-top:16px}
-.sim-history h4{font-size:.8rem;color:var(--muted);margin-bottom:8px}
-.sim-history-item{font-size:.75rem;color:var(--text2);padding:4px 0;
-  display:flex;justify-content:space-between}
-#simClearBtn{background:none;border:1px solid var(--border);color:var(--muted);
-  padding:4px 12px;border-radius:12px;font-size:.7rem;cursor:pointer;margin-top:8px}
-#simClearBtn:hover{color:var(--text);border-color:var(--accent)}
+/* Interactive Simulator */
+.sim { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:clamp(20px,4vw,40px); max-width:700px; margin:0 auto 60px; }
+.sim h2 { text-align:center; font-size:clamp(18px,2.5vw,22px); margin-bottom:8px; }
+.sim .sim-sub { text-align:center; color:var(--text2); font-size:clamp(12px,1.6vw,14px); margin-bottom:24px; }
+.sim input { width:100%; padding:clamp(10px,2vw,14px) clamp(14px,2vw,18px); background:var(--surface2); border:1px solid var(--border); border-radius:10px; color:var(--text); font-size:clamp(14px,2vw,16px); margin-bottom:12px; }
+.sim input:focus { outline:none; border-color:var(--accent); }
+.sim-btn { display:block; width:100%; padding:clamp(10px,2vw,14px); border:none; border-radius:10px; font-size:clamp(14px,2vw,16px); font-weight:600; cursor:pointer; margin-bottom:24px; background:linear-gradient(135deg, var(--duan), var(--nvda)); color:#000; }
+.sim-btn:hover { opacity:0.9; }
+.sim-result { display:none; }
+.sim-result .verdict { font-size:clamp(15px,2vw,18px); font-weight:700; margin-bottom:16px; text-align:center; }
+.sim-result .breakdown { display:grid; gap:10px; }
+.sim-result .breakdown .row { display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--surface2); border-radius:8px; gap:8px; }
+.sim-result .breakdown .row .investor { font-weight:600; width:clamp(60px,15vw,80px); flex-shrink:0; }
+.sim-result .breakdown .row .signal { padding:4px 12px; border-radius:12px; font-size:clamp(11px,1.5vw,13px); font-weight:600; white-space:nowrap; flex-shrink:0; }
+@media (max-width:520px) {
+  .sim-result .breakdown .row { flex-wrap:wrap; }
+  .sim-result .breakdown .row .investor { width:100%; margin-bottom:4px; }
+  .sim-result .breakdown .row span:last-child { width:100%; margin-left:0 !important; margin-top:4px; }
+}
+.signal.buy { background:rgba(118,185,0,0.15); color:var(--nvda); }
+.signal.hold { background:rgba(240,192,64,0.15); color:var(--gold); }
+.signal.sell { background:rgba(255,107,107,0.15); color:var(--warn); }
 
-/* ═══════ #7 D3 GRAPH ═══════ */
-.d3-section{max-width:1200px;margin:0 auto 60px;padding:0 24px}
-.d3-section h2{text-align:center;font-size:24px;margin-bottom:24px}
-#philoGraph{width:100%;height:500px;background:var(--card);border:1px solid var(--border);
-  border-radius:var(--radius);overflow:hidden}
-@media(max-width:640px){#philoGraph{height:380px}}
+/* Insights */
+.insights { max-width:1000px; margin:0 auto 60px; padding:0 clamp(12px,4vw,24px); }
+.insights h2 { text-align:center; font-size:clamp(20px,2.8vw,24px); margin-bottom:32px; }
+.insight-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(min(100%,280px),1fr)); gap:20px; }
+.insight-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:clamp(18px,3vw,28px); }
+.insight-card h3 { font-size:clamp(14px,1.8vw,16px); margin-bottom:10px; }
+.insight-card p { color:var(--text2); font-size:clamp(12px,1.5vw,14px); }
+@media (max-width:480px) {
+  .insight-grid { grid-template-columns: 1fr; }
+}
 
-/* ═══════ BACK TO TOP ═══════ */
-#backTop{position:fixed;bottom:24px;right:24px;z-index:100;
-  width:44px;height:44px;border-radius:50%;border:1px solid var(--border);
-  background:var(--card);color:var(--text2);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;pointer-events:none;transition:opacity .3s,transform .2s;
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  font-size:1.2rem}
-#backTop.visible{opacity:1;pointer-events:auto}
-#backTop:hover{transform:translateY(-3px);border-color:var(--accent)}
+/* Section */
+.section-title { text-align:center; font-size:clamp(18px,2.5vw,22px); margin:clamp(40px,5vw,60px) 0 32px; color:var(--text); }
+.section-title span { opacity:0.5; font-size:clamp(14px,1.8vw,16px); }
 
-/* ═══════ FOOTER ═══════ */
-footer{text-align:center;padding:2rem;border-top:1px solid var(--border);
-  color:var(--muted);font-size:.75rem}
-footer a{color:var(--accent);text-decoration:none}
+/* Footer */
+.footer { text-align:center; padding:clamp(28px,4vw,40px) clamp(16px,4vw,24px); color:var(--text2); font-size:clamp(11px,1.5vw,13px); border-top:1px solid var(--border); margin-top:60px; }
+.footer a { color:var(--accent); text-decoration:none; }
+
+/* ── Responsive Breakpoints ── */
+
+/* Tablet landscape / small desktop (769px - 1024px) */
+@media (min-width:769px) and (max-width:1024px) {
+  .pillars { grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); }
+  .philo-grid { grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); }
+  .case-grid { grid-template-columns: repeat(2, 1fr); }
+  .insight-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Tablet portrait / large phone (481px - 768px) */
+@media (min-width:481px) and (max-width:768px) {
+  .hero { padding:50px 20px 44px; }
+  .pillars { grid-template-columns:1fr; gap:16px; }
+  .pillar { padding:24px; }
+  .philo-grid { grid-template-columns:1fr 1fr; gap:14px; }
+  .case-grid { grid-template-columns:1fr 1fr; gap:12px; }
+  .insight-grid { grid-template-columns:1fr 1fr; gap:14px; }
+  .funnel-layer { gap:8px; }
+  .funnel-layer .layer-desc { font-size:11px; }
+}
+
+/* Phone (up to 480px) */
+@media (max-width:480px) {
+  .hero { padding:36px 14px 32px; }
+  .hero h1 { line-height:1.2; }
+  .pillars { grid-template-columns:1fr; gap:14px; }
+  .pillar { padding:18px; }
+  .tabs-nav { gap:4px; }
+  .tab-btn { padding:8px 14px; font-size:12px; border-radius:18px; }
+  .philo-grid { grid-template-columns:1fr; gap:12px; }
+  .case-grid { grid-template-columns:1fr; gap:12px; }
+  .insight-grid { grid-template-columns:1fr; gap:14px; }
+  .funnel-layer { padding:10px 12px; }
+  .funnel-layer .layer-name { font-size:12px; width:70px; }
+  .funnel-section { padding:18px; }
+  .sim { padding:20px; }
+  .data-table th, .data-table td { padding:8px 10px; font-size:11px; }
+  .matrix table { min-width:460px; }
+  .funnel-layer .layer-desc { display:none; }
+  .funnel-layer .layer-source { display:none; }
+}
+
+/* ── Responsive: inline-styled containers in tabs ── */
+.tab-content [style*="max-width:1100px"] { max-width:100% !important; }
+.tab-content [style*="max-width:900px"] { max-width:100% !important; }
+@media (max-width:480px) {
+  .tab-content [style*="padding:0 24px"] { padding:0 12px !important; }
+}
+
+/* Very small phone (<=360px) */
+@media (max-width:360px) {
+  .hero h1 { font-size:22px; }
+  .tab-btn { padding:6px 10px; font-size:11px; }
+  .pillar h2 { font-size:18px; }
+  .matrix table { min-width:400px; }
+  .matrix th, .matrix td { padding:6px 8px; font-size:10px; }
+}
+
+/* Large desktop (1440px+) */
+@media (min-width:1440px) {
+  .pillars { max-width:1400px; }
+  .philo-grid { max-width:1400px; }
+  .case-grid { max-width:1400px; }
+  .insight-grid { max-width:1200px; }
+  .insights { max-width:1200px; }
+  .funnel-section { max-width:1400px; }
+  .tabs-nav { max-width:1400px; }
+  .sim { max-width:800px; }
+}
 </style>
 </head>
 <body>
-
-<a href="#main-content" class="skip-link">跳转到主内容</a>
-
-<!-- ═══════ #5 CANVAS STARFIELD ═══════ -->
 <canvas id="starfield"></canvas>
 
-<!-- ═══════ HERO ═══════ -->
-<main id="main-content">
-<section class="hero">
+<!-- Hero -->
+<section class="hero reveal">
   <h1>三大投资哲学 · 碰撞与融合</h1>
-  <p class="sub">段永平的「本分」× 巴菲特的「护城河」× 孙正义的「时光机」<br>谁能在下一轮科技浪潮中胜出？</p>
+  <p class="sub">段永平 · 巴菲特&芒格 · 孙正义 — 三条通往真理的路径</p>
 </section>
 
-<!-- ═══════ THREE PILLARS ═══════ -->
-<section class="pillars reveal">
-  <div class="pillar duan" tabindex="0" role="button" aria-label="段永平投资哲学" onclick="switchTab(0)">
-    <div class="icon">🧊</div>
+<!-- Three Pillars -->
+<section class="pillars">
+  <div class="pillar duan reveal reveal-delay-1" onclick="switchTab('duan')">
+    <div class="icon">🏔️</div>
     <h2>段永平</h2>
-    <p class="tagline">本分 · 能力圈 · 逆向</p>
+    <p class="tagline">护城河优先 · 不懂不做 · 长期持有</p>
     <div class="traits">
-      <span class="trait">只买懂的</span><span class="trait">好价格</span>
-      <span class="trait">长期持有</span><span class="trait">不跟风</span>
+      <span class="trait">买股票=买公司</span>
+      <span class="trait">护城河第一</span>
+      <span class="trait">能力圈</span>
+      <span class="trait">集中持仓</span>
     </div>
-    <p class="record">代表作：网易 100× · 苹果 · 茅台 ｜ <strong>年化 ~25%</strong></p>
+    <p class="record">代表作：网易 100x · 苹果 +1600% · 茅台 10x<br>二十年来真正重仓不到十个</p>
   </div>
-
-  <div class="pillar buffett" tabindex="0" role="button" aria-label="巴菲特投资哲学" onclick="switchTab(1)">
-    <div class="icon">🏰</div>
-    <h2>巴菲特</h2>
-    <p class="tagline">护城河 · 安全边际 · 复利</p>
+  <div class="pillar buffett reveal reveal-delay-2" onclick="switchTab('buffett')">
+    <div class="icon">🏛️</div>
+    <h2>巴菲特 & 芒格</h2>
+    <p class="tagline">安全边际 · 浮存金 · 不可替代的资产</p>
     <div class="traits">
-      <span class="trait">护城河</span><span class="trait">现金流</span>
-      <span class="trait">安全边际</span><span class="trait">管理层</span>
+      <span class="trait">逆向思维</span>
+      <span class="trait">浮存金引擎</span>
+      <span class="trait">安全边际</span>
+      <span class="trait">基础设施</span>
     </div>
-    <p class="record">代表作：可口可乐 · 苹果 · 比亚迪 ｜ <strong>年化 ~20%</strong></p>
+    <p class="record">代表作：可口可乐 36年 · GEICO · BNSF · Apple<br>从"捡烟蒂"到"买伟大公司"的进化者</p>
   </div>
-
-  <div class="pillar son" tabindex="0" role="button" aria-label="孙正义投资哲学" onclick="switchTab(2)">
-    <div class="icon">⏳</div>
+  <div class="pillar son reveal reveal-delay-3" onclick="switchTab('son')">
+    <div class="icon">🚀</div>
     <h2>孙正义</h2>
-    <p class="tagline">时光机 · 愿景 · 集中押注</p>
+    <p class="tagline">趋势验证 · 不对称押注 · 300年视野</p>
     <div class="traits">
-      <span class="trait">300年愿景</span><span class="trait">集中投资</span>
-      <span class="trait">群战略</span><span class="trait">科技赌注</span>
+      <span class="trait">模式识别</span>
+      <span class="trait">代际趋势</span>
+      <span class="trait">集中豪赌</span>
+      <span class="trait">长期主义</span>
     </div>
-    <p class="record">代表作：阿里 · ARM · 愿景基金 ｜ <strong>阿里 ~2900×</strong></p>
+    <p class="record">代表作：阿里 1700x · ARM +$260B · OpenAI<br>WeWork $10B 灰飞烟灭 → 从失败中学习</p>
   </div>
 </section>
 
-<!-- ═══════ #8 TABS WITH KEYBOARD ═══════ -->
-<nav class="tabs-nav reveal" role="tablist" aria-label="投资哲学分析维度">
-  <button class="tab-btn active duan" role="tab" aria-selected="true" data-tab="0">段永平</button>
-  <button class="tab-btn buffett" role="tab" aria-selected="false" data-tab="1">巴菲特</button>
-  <button class="tab-btn son" role="tab" aria-selected="false" data-tab="2">孙正义</button>
-  <button class="tab-btn all" role="tab" aria-selected="false" data-tab="3">碰撞</button>
-  <button class="tab-btn all" role="tab" aria-selected="false" data-tab="4">决策框架</button>
-  <button class="tab-btn all" role="tab" aria-selected="false" data-tab="5">模拟器</button>
+<!-- Tabs -->
+<nav class="tabs-nav">
+  <button class="tab-btn active all" onclick="switchTab('all')">🔄 三合一</button>
+  <button class="tab-btn duan" onclick="switchTab('duan')">🏔️ 段永平</button>
+  <button class="tab-btn buffett" onclick="switchTab('buffett')">🏛️ 巴菲特&芒格</button>
+  <button class="tab-btn son" onclick="switchTab('son')">🚀 孙正义</button>
 </nav>
 
-<!-- ═══════ TAB 0: 段永平 ═══════ -->
-<section class="tab-content active" id="tab0" role="tabpanel">
-  <div class="philo-grid">
-    <div class="philo-card duan reveal">
-      <h3><span class="num">1</span> 能力圈 — 只买自己懂的公司</h3>
-      <p>「不懂不做」是段永平的第一原则。他投资苹果不是因为有屏幕或芯片，而是因为「我用了 iPhone 之后就知道这东西会赢」。能力圈不是画地为牢——是诚实面对自己认知的边界。</p>
-      <div class="quote">「我从来没看过巴菲特的持仓变化，我也不管别人买了什么。我只管我自己能不能看懂。」— 段永平</div>
-    </div>
-    <div class="philo-card duan reveal reveal-d1">
-      <h3><span class="num">2</span> 好价格 — 等那个别人恐惧的时刻</h3>
-      <p>2001年网易跌到0.6美元时，别人看到的是退市风险，段永平看到的是「这家公司账上现金都比市值多」。好价格不是算出来的——是等出来的。</p>
-      <div class="quote">「买股票就是买公司，买公司就是买未来的现金流折现。」— 段永平</div>
-    </div>
-    <div class="philo-card duan reveal reveal-d2">
-      <h3><span class="num">3</span> 本分 — 做对的事，把事做对</h3>
-      <p>这不仅是投资原则，更是他的底层操作系统。不追热点、不搞杠杆、不赚自己看不懂的钱。在股市里，「不做」比「做」更难。</p>
-      <div class="quote">「如果你不愿意持有一只股票十年，那就不要持有十分钟。」— 段永平（引用巴菲特）</div>
+<!-- Tab: All (default) -->
+<div class="tab-content active" id="tab-all">
+
+  <!-- Unified Funnel -->
+  <div class="funnel-section reveal">
+    <h2>Ariste 七层决策漏斗</h2>
+    <p style="text-align:center;color:var(--text2);margin-bottom:32px;">融合段永平、巴菲特/芒格、孙正义 — 逐层通过，不可跳层</p>
+    <div class="funnel">
+      <div class="funnel-layer f1"><span class="layer-icon">🏰</span><span class="layer-num">①</span><span class="layer-name">护城河</span><span class="layer-desc">竞争优势真实吗？可持续多久？</span><span class="layer-source">段永平</span></div>
+      <div class="funnel-layer f2"><span class="layer-icon">🌊</span><span class="layer-num">②</span><span class="layer-name">趋势验证</span><span class="layer-desc">代际更替还是短期风口？</span><span class="layer-source">孙正义</span></div>
+      <div class="funnel-layer f3"><span class="layer-icon">💰</span><span class="layer-num">③</span><span class="layer-name">现金流结构</span><span class="layer-desc">怎么产生现金？需要不断烧钱吗？</span><span class="layer-source">巴菲特</span></div>
+      <div class="funnel-layer f4"><span class="layer-icon">🧭</span><span class="layer-num">④</span><span class="layer-name">企业文化</span><span class="layer-desc">管理层值得信任吗？</span><span class="layer-source">段永平</span></div>
+      <div class="funnel-layer f5"><span class="layer-icon">🎯</span><span class="layer-num">⑤</span><span class="layer-name">能力圈</span><span class="layer-desc">我真的懂这门生意吗？</span><span class="layer-source">段永平</span></div>
+      <div class="funnel-layer f6"><span class="layer-icon">💀</span><span class="layer-num">⑥</span><span class="layer-name">逆向验证</span><span class="layer-desc">最大的三个死法是什么？</span><span class="layer-source">芒格</span></div>
+      <div class="funnel-layer f7"><span class="layer-icon">⚖️</span><span class="layer-num">⑦</span><span class="layer-name">安全边际</span><span class="layer-desc">当前价格有折扣吗？</span><span class="layer-source">格雷厄姆</span></div>
     </div>
   </div>
-</section>
 
-<!-- ═══════ TAB 1: 巴菲特 ═══════ -->
-<section class="tab-content" id="tab1" role="tabpanel">
-  <div class="philo-grid">
-    <div class="philo-card buffett reveal">
-      <h3><span class="num">1</span> 护城河 — 找到别人无法复制的壁垒</h3>
-      <p>可口可乐的品牌、GEICO 的成本优势、BNSF 的网络效应——护城河是「别人知道你怎么赚钱，但就是学不会」的那个东西。</p>
-      <div class="quote">「The most important thing is trying to find a business with a wide and long-lasting moat around it.」— Warren Buffett</div>
-    </div>
-    <div class="philo-card buffett reveal reveal-d1">
-      <h3><span class="num">2</span> 安全边际 — 用40美分买1美元的资产</h3>
-      <p>不是精准估值，而是「即使我看错了，也不会亏太多」。当市场恐慌时，安全边际最大。</p>
-      <div class="quote">「Rule No.1: Never lose money. Rule No.2: Never forget rule No.1.」— Warren Buffett</div>
-    </div>
-    <div class="philo-card buffett reveal reveal-d2">
-      <h3><span class="num">3</span> 长期复利 — 找到可以持有到死的公司</h3>
-      <p>巴菲特持有可口可乐35年，持有美国运通60年。复利不是数学公式——是一种信仰：好公司的时间价值远超市场价格波动。</p>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════ TAB 2: 孙正义 ═══════ -->
-<section class="tab-content" id="tab2" role="tabpanel">
-  <div class="philo-grid">
-    <div class="philo-card son reveal">
-      <h3><span class="num">1</span> 时光机理论 — 在美国验证，在中国规模化</h3>
-      <p>2000年孙正义看到雅虎日本，投了阿里——因为他知道「互联网在中国的时间线比美国晚5年」。时光机不是预测未来——是看到了别人还没看到的当下。</p>
-      <div class="quote">「In the next 30 years, the Singularity will happen. Superintelligence will be 10,000 times smarter than all the humans on Earth.」— Masayoshi Son</div>
-    </div>
-    <div class="philo-card son reveal reveal-d1">
-      <h3><span class="num">2</span> 300年愿景 — 用100年的尺度做决策</h3>
-      <p>孙正义的投资不是看3年、5年——他看的是 AI、机器人、半导体在未来100年对人类的改变。这种时间视野让他能忍受 ARM 十几年的亏损等待物联网爆发。</p>
-    </div>
-    <div class="philo-card son reveal reveal-d2">
-      <h3><span class="num">3</span> 集中押注 + 群战略 — 既要信念也要分布式</h3>
-      <p>一方面敢于在单个赛道（如 ARM、阿里）下重注，另一方面通过愿景基金布局 500+ 公司形成生态群。这是「信念 × 概率」的乘法。</p>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════ TAB 3: 碰撞 ═══════ -->
-<section class="tab-content" id="tab3" role="tabpanel">
-  <!-- #3 ACCORDION COLLISION -->
-  <div class="accordion reveal">
-    <button class="accordion-header" onclick="this.closest('.accordion').classList.toggle('open')" aria-expanded="false">
-      <span class="arrow">▼</span> ⚡ 碰撞一：能力圈 vs 时光机 — 看懂的边界在哪里？
-    </button>
-    <div class="accordion-body"><div class="accordion-body-inner">
-      <p><strong>段永平</strong>说：只投自己懂的。如果不懂 AI，就别投英伟达。</p>
-      <p><strong>孙正义</strong>说：等你「懂」了，机会已经过去了。ARM 收购时没人懂物联网，他赌的是方向和概率。</p>
-      <p><strong>融合点</strong>：段永平的「懂」是深度认知（know-why），孙正义的「懂」是方向认知（know-what）。两者不矛盾——可以用段永平的深度验证孙正义的方向押注。</p>
-    </div></div>
-  </div>
-
-  <div class="accordion reveal reveal-d1">
-    <button class="accordion-header" onclick="this.closest('.accordion').classList.toggle('open')" aria-expanded="false">
-      <span class="arrow">▼</span> ⚡ 碰撞二：安全边际 vs 集中押注 — 防守还是进攻？
-    </button>
-    <div class="accordion-body"><div class="accordion-body-inner">
-      <p><strong>巴菲特</strong>的「安全边际」本质是「我不会错得很惨」。</p>
-      <p><strong>孙正义</strong>的「集中押注」本质是「如果我对了，我会赢得很大」。</p>
-      <p><strong>融合点</strong>：凯利公式——当赔率足够高时，集中押注 + 仓位控制 = 巴菲特式的安全边际。关键不是对立的哲学，而是赔率判断的精确度。</p>
-    </div></div>
-  </div>
-
-  <div class="accordion reveal reveal-d2">
-    <button class="accordion-header" onclick="this.closest('.accordion').classList.toggle('open')" aria-expanded="false">
-      <span class="arrow">▼</span> ⚡ 碰撞三：护城河 vs 技术颠覆 — 稳定性能抵抗变革吗？
-    </button>
-    <div class="accordion-body"><div class="accordion-body-inner">
-      <p><strong>巴菲特</strong>重仓苹果、可口可乐——它们有「即使有人给1000亿美元也造不出第二个」的护城河。</p>
-      <p><strong>段永平</strong>也重仓苹果，但他的理由是「生态粘性」而非传统护城河——用户换了安卓就回不来了。这是一种不同的护城河形态。</p>
-      <p><strong>孙正义</strong>则不同——他投的是「下一个苹果」，是正在形成护城河的公司。ARM 的指令集架构就是未来万物互联时代的「新可口可乐」。</p>
-    </div></div>
-  </div>
-
-  <!-- Cross-comparison table -->
-  <div class="matrix reveal reveal-d3">
-    <h3 style="margin-bottom:16px">哲学对比矩阵</h3>
+  <!-- Comparison Matrix -->
+  <div class="section-title reveal"><span>📊</span> 三人对比矩阵</div>
+  <div class="matrix" style="max-width:1100px;margin:0 auto 40px;padding:0 24px;">
     <table class="data-table">
-      <thead><tr>
-        <th>维度</th><th>段永平</th><th>巴菲特</th><th>孙正义</th>
-      </tr></thead>
-      <tbody>
-        <tr><td>时间视野</td><td>10年+</td><td>永久</td><td>100-300年</td></tr>
-        <tr><td>决策依据</td><td>能力圈内的深度认知</td><td>护城河 + 安全边际</td><td>技术趋势 + 概率分布</td></tr>
-        <tr><td>仓位策略</td><td>高度集中</td><td>适度集中</td><td>集中押注 + 群分布</td></tr>
-        <tr><td>风险态度</td><td>不做不懂的事</td><td>不亏钱第一</td><td>不怕亏，怕错过</td></tr>
-        <tr><td>最佳适用</td><td>消费/科技消费品</td><td>金融/消费/基础设施</td><td>科技早期/平台型公司</td></tr>
-        <tr><td>最怕什么</td><td class="fail">自欺欺人</td><td class="fail">永久性资本损失</td><td class="fail">错过范式转移</td></tr>
-      </tbody>
+      <tr><th>维度</th><th style="color:var(--duan)">段永平</th><th style="color:var(--nvda)">巴菲特 & 芒格</th><th style="color:var(--gold)">孙正义</th></tr>
+      <tr><td>核心问题</td><td>这护城河是真的吗？</td><td>这生意十年后还在吗？</td><td>这是代际更替级别吗？</td></tr>
+      <tr><td>时间尺度</td><td>10-20 年</td><td>永远（如果可能）</td><td>30-300 年</td></tr>
+      <tr><td>持仓数量</td><td>集中（<10 个）</td><td>集中 + 分散混合</td><td>极度集中（有时押一个）</td></tr>
+      <tr><td>买入触发</td><td>护城河清晰 + 价格合理</td><td>安全边际 + 可理解</td><td>模式识别 + 趋势确认</td></tr>
+      <tr><td>卖出触发</td><td>护城河裂了</td><td>基本面永久恶化</td><td>趋势判断错误</td></tr>
+      <tr><td>最大优势</td><td>极度耐心，不懂不做</td><td>浮存金引擎 + 逆向</td><td>跨度极大的长期视野</td></tr>
+      <tr><td>最大弱点</td><td>可能错过科技颠覆</td><td>路径依赖（早年错过科技）</td><td>看人不准 + 过度集中</td></tr>
+      <tr><td>对待失败</td><td>规避为主（不懂不做）</td><td>从错误中提炼原则</td><td>继续赌（倍增下注）</td></tr>
+      <tr><td>适合市场</td><td>成熟市场 + 消费品牌</td><td>任何有护城河的生意</td><td>技术变革期 + 新兴市场</td></tr>
     </table>
   </div>
-</section>
 
-<!-- ═══════ TAB 4: 决策框架 ═══════ -->
-<section class="tab-content" id="tab4" role="tabpanel">
-  <!-- FUNNEL -->
-  <div class="funnel-section">
-    <h2>投资决策漏斗</h2>
-    <p style="text-align:center;color:var(--text2);margin-bottom:24px">从 3000+ 家公司到 1 个决策 — 三哲融合的筛选体系</p>
-    <div class="funnel">
-      <div class="funnel-layer f1"><div class="layer-icon">🔭</div><div class="layer-num">1</div><div class="layer-name">时光机扫描</div><div class="layer-desc">识别全球已验证的科技趋势，映射到中国市场</div><div class="layer-source">孙正义</div></div>
-      <div class="funnel-layer f2"><div class="layer-icon">🏰</div><div class="layer-num">2</div><div class="layer-name">护城河检验</div><div class="layer-desc">品牌/网络效应/转换成本/规模优势</div><div class="layer-source">巴菲特</div></div>
-      <div class="funnel-layer f3"><div class="layer-icon">🧊</div><div class="layer-num">3</div><div class="layer-name">能力圈对齐</div><div class="layer-desc">我真的懂这家公司吗？</div><div class="layer-source">段永平</div></div>
-      <div class="funnel-layer f4"><div class="layer-icon">💰</div><div class="layer-num">4</div><div class="layer-name">现金流折现</div><div class="layer-desc">DCF 估算内在价值区间</div><div class="layer-source">巴菲特</div></div>
-      <div class="funnel-layer f5"><div class="layer-icon">🎯</div><div class="layer-num">5</div><div class="layer-name">安全边际</div><div class="layer-desc">市价 vs 内在价值，需要 30%+ 折扣</div><div class="layer-source">巴菲特+段</div></div>
-      <div class="funnel-layer f6"><div class="layer-icon">⚖️</div><div class="layer-num">6</div><div class="layer-name">凯利仓位</div><div class="layer-desc">根据胜率+赔率计算最优仓位比例</div><div class="layer-source">融合</div></div>
-      <div class="funnel-layer f7"><div class="layer-icon">✅</div><div class="layer-num">7</div><div class="layer-name">决策</div><div class="layer-desc">买入 / 等待 / 放弃</div><div class="layer-source">你的判断</div></div>
+  <!-- Case Comparison -->
+  <div class="section-title"><span>📖</span> 经典案例交叉对照</div>
+  <div class="matrix" style="max-width:1100px;margin:0 auto 40px;padding:0 24px;">
+    <table class="data-table">
+      <tr><th>案例</th><th style="color:var(--duan)">段永平会怎么做</th><th style="color:var(--nvda)">巴菲特会怎么做</th><th style="color:var(--gold)">孙正义会怎么做</th></tr>
+      <tr>
+        <td><strong>苹果</strong></td>
+        <td class="pass">✅ 重仓（2011至今）<br>"iOS生态比可口可乐好"</td>
+        <td class="pass">✅ 第一重仓<br>从消费电子看消费品本质</td>
+        <td class="maybe">⚠️ 早期没投<br>错过了移动互联网最大赢家</td>
+      </tr>
+      <tr>
+        <td><strong>阿里巴巴</strong></td>
+        <td class="fail">❌ 2026清仓<br>"护城河裂了"</td>
+        <td class="fail">❌ 不会买<br>不投中国科技股</td>
+        <td class="pass">✅ 2000年$20M→$60B<br>史上最伟大单笔风投</td>
+      </tr>
+      <tr>
+        <td><strong>ARM</strong></td>
+        <td class="maybe">⚠️ 会研究但可能不买<br>需要很深的技术理解</td>
+        <td class="fail">❌ 不会买<br>超出能力圈</td>
+        <td class="pass">✅ 2016年$31B收购<br>十年后被证实为天才之赌</td>
+      </tr>
+      <tr>
+        <td><strong>Starlink/SpaceX</strong></td>
+        <td class="fail">❌ 不买<br>①混了零护城河AI段 ③整体烧钱 ⑦零安全边际</td>
+        <td class="fail">❌ 不买<br>⑤超出能力圈 ④治理red flag</td>
+        <td class="pass">✅ 会买<br>这是代际更替级别的趋势</td>
+      </tr>
+      <tr>
+        <td><strong>WeWork</strong></td>
+        <td class="pass">✅ 不会碰<br>①没有护城河（二房东）</td>
+        <td class="pass">✅ 不会碰<br>没有真正的经济护城河</td>
+        <td class="fail">❌ 投了$10B+ 灰飞烟灭<br>看错了人</td>
+      </tr>
+      <tr>
+        <td><strong>泡泡玛特</strong></td>
+        <td class="pass">✅ 2026建仓6%<br>从"不懂"到理解IP+全球零售</td>
+        <td class="maybe">⚠️ 可能不会买<br>IP生命周期不确定</td>
+        <td class="pass">✅ 会买<br>全球消费趋势 × 亚洲文化输出</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+<!-- Tab: Duan Yongping -->
+<div class="tab-content" id="tab-duan">
+  <div class="philo-grid">
+    <div class="philo-card duan">
+      <h3><span class="num">1</span> 买股票 = 买公司</h3>
+      <p>你必须像买下整家公司一样研究它。股票不是一张纸——它是一个生意的所有权凭证。</p>
+      <div class="quote">"买股票就是买公司的一部分。"</div>
+    </div>
+    <div class="philo-card duan">
+      <h3><span class="num">2</span> 不懂不做</h3>
+      <p>95%的人避免亏损的核心。不是永远不做——是搞懂之前不做。搞懂之后，重仓。</p>
+      <div class="quote">"不懂不碰是铁律。"</div>
+    </div>
+    <div class="philo-card duan">
+      <h3><span class="num">3</span> 护城河第一，价格最后</h3>
+      <p>多数人从价格开始——看到便宜就买，然后回头找理由。段永平从护城河开始。①不通过永远看不到④。</p>
+      <div class="quote">"先问这是好生意吗，再问价格合理吗。"</div>
+    </div>
+    <div class="philo-card duan">
+      <h3><span class="num">4</span> 卖出是因为①裂了</h3>
+      <p>阿里清仓不是因为跌了——是因为护城河裂了。苹果从来没卖过一股——因为护城河从来没变过。</p>
+      <div class="quote">"卖出的理由只有一个：商业模式坏了。"</div>
+    </div>
+    <div class="philo-card duan">
+      <h3><span class="num">5</span> 集中持仓</h3>
+      <p>前四大持仓占比80%+。二十年真正重仓的标的不到十个。分散投资是对无知的保护。</p>
+      <div class="quote">"你不需要投对很多次——你需要的是几次重仓投对。"</div>
     </div>
   </div>
 
-  <!-- #3 ACCORDION: Case Studies -->
-  <h3 style="text-align:center;margin-bottom:20px">案例回溯 · 用三哲框架验证历史决策</h3>
-  <div class="case-grid reveal">
-    <div class="case-card">
-      <div class="case-header"><span class="case-name">苹果 AAPL (2016)</span><span class="case-return win">+500%</span></div>
-      <p class="case-lesson"><strong>段永平</strong>「我用 iPhone 就知道它会赢」<br><strong>巴菲特</strong>「消费者宁愿放弃汽车也不放弃 iPhone」→ 2016年建仓<br><strong>孙子义</strong>未参与成熟期公司</p>
+  <div class="section-title"><span>📖</span> 经典四步决策漏斗</div>
+  <div class="funnel" style="max-width:700px;margin:0 auto 40px;">
+    <div style="background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);border-radius:10px;padding:16px 20px;margin-bottom:6px;width:95%;">
+      <strong>① 商业模式好吗？</strong> 护城河是真的吗？别人能复制吗？
     </div>
-    <div class="case-card">
-      <div class="case-header"><span class="case-name">WeWork (2019)</span><span class="case-return lose">-99%</span></div>
-      <p class="case-lesson">孙正义的「愿景」输给了巴菲特的「护城河检验」— WeWork 没有护城河，只是一个装修公司加了 APP。</p>
+    <div style="background:rgba(0,212,255,0.05);border:1px solid rgba(0,212,255,0.1);border-radius:10px;padding:16px 20px;margin-bottom:6px;width:88%;margin-left:auto;margin-right:auto;">
+      <strong>② 企业文化对吗？</strong> 管理层值得信任吗？
     </div>
-    <div class="case-card">
-      <div class="case-header"><span class="case-name">茅台 (2013)</span><span class="case-return win">+1800%</span></div>
-      <p class="case-lesson">段永平「好生意 + 好价格 + 不要卖」— 白酒不需要时光机，需要的是「拿住」的定力。</p>
+    <div style="background:rgba(0,212,255,0.03);border:1px solid rgba(0,212,255,0.06);border-radius:10px;padding:16px 20px;margin-bottom:6px;width:80%;margin-left:auto;margin-right:auto;">
+      <strong>③ 在我能力圈内吗？</strong> 我真的懂这门生意吗？
     </div>
-    <div class="case-card">
-      <div class="case-header"><span class="case-name">软银/ARM (2016→2023)</span><span class="case-return win">+150%</span></div>
-      <p class="case-lesson">孙正义的时光机：ARM 是万物互联的「新可口可乐」。7年等待，AI算力需求爆发验证了判断。</p>
-    </div>
-    <div class="case-card">
-      <div class="case-header"><span class="case-name">比亚迪 (2008)</span><span class="case-return win">+3000%</span></div>
-      <p class="case-lesson">巴菲特破例投了「科技制造」— Munger 说「王传福是爱迪生+韦尔奇的合体」。护城河 = 全产业链整合能力。</p>
-    </div>
-    <div class="case-card">
-      <div class="case-header"><span class="case-name">愿景基金/滴滴 (2019)</span><span class="case-return lose">-60%</span></div>
-      <p class="case-lesson">时光机看到了网约车的「美国已验证」，但没看到中国监管的「不可复制」— 能力圈之外的变量。</p>
+    <div style="background:rgba(0,212,255,0.02);border:1px solid rgba(0,212,255,0.04);border-radius:10px;padding:16px 20px;width:72%;margin-left:auto;margin-right:auto;">
+      <strong>④ 价格合理吗？</strong> 不是最低，是合理。
     </div>
   </div>
-</section>
 
-<!-- ═══════ TAB 5: 模拟器 ═══════ -->
-<section class="tab-content" id="tab5" role="tabpanel">
-  <div class="sim reveal">
-    <h2>🧪 投资哲学模拟器</h2>
-    <p class="sim-sub">输入一家公司，看三位投资大师会怎么判断</p>
-    <input type="text" id="simCompany" placeholder="输入公司名称或股票代码... (如 NVDA, 赛力斯, BYD)" aria-label="公司名称">
-    <button class="sim-btn" id="simBtn" onclick="runSimulator()">运行模拟 →</button>
-    <div class="sim-result" id="simResult"></div>
-    <div class="sim-history" id="simHistory" style="display:none">
-      <h4>📋 历史记录</h4>
-      <div id="simHistoryList"></div>
-      <button id="simClearBtn" onclick="clearHistory()">清除历史</button>
+  <div class="case-grid" style="max-width:1100px;margin:0 auto 40px;padding:0 24px;">
+    <div class="case-card"><div class="case-header"><span class="case-name">网易 2002</span><span class="case-return win">100x</span></div><p class="case-lesson">游戏毛利率60%，现金>市值。段永平看到了别人没看到的——网易不是互联网公司，是印钞机。</p></div>
+    <div class="case-card"><div class="case-header"><span class="case-name">苹果 2011-今</span><span class="case-return win">+1600%</span></div><p class="case-lesson">iOS生态锁定，"比可口可乐好"。14年没卖过一股。</p></div>
+    <div class="case-card"><div class="case-header"><span class="case-name">茅台 2013</span><span class="case-return win">10x+</span></div><p class="case-lesson">塑化剂危机时买入。"存货越陈越值钱"→ 时间的朋友。</p></div>
+    <div class="case-card"><div class="case-header"><span class="case-name">阿里 Q1 2026</span><span class="case-return lose">清仓退出</span></div><p class="case-lesson">拼多多+抖音侵蚀，①裂了→ 立即行动。</p></div>
+    <div class="case-card"><div class="case-header"><span class="case-name">泡泡玛特 2026</span><span class="case-return win">建仓中</span></div><p class="case-lesson">从"不懂"到理解IP+全球零售→ 重仓6%。</p></div>
+    <div class="case-card"><div class="case-header"><span class="case-name">神华</span><span class="case-return lose">卖出</span></div><p class="case-lesson">高股息≠好商业模式。不能因为便宜就买。</p></div>
+  </div>
+</div>
+
+<!-- Tab: Buffett & Munger -->
+<div class="tab-content" id="tab-buffett">
+  <div class="philo-grid">
+    <div class="philo-card buffett">
+      <h3><span class="num">1</span> 买股票 = 买公司</h3>
+      <p>与段永平的起点完全一致。你不是在交易一个符号——你是在购买一个生意的部分所有权。</p>
+    </div>
+    <div class="philo-card buffett">
+      <h3><span class="num">2</span> 安全边际</h3>
+      <p>用40美分买价值1美元的东西。这是格雷厄姆的遗产——护城河之前的第一道防线。</p>
+      <div class="quote">"投资的第一条规则是不要亏钱。第二条是不要忘记第一条。"</div>
+    </div>
+    <div class="philo-card buffett">
+      <h3><span class="num">3</span> 浮存金引擎</h3>
+      <p>GEICO教给巴菲特的最重要一课：保险浮存金是永久性的负成本资金。这是伯克希尔整个帝国的燃料。</p>
+      <div class="quote">"浮存金不是负债——是可以用来投资的免费贷款。"</div>
+    </div>
+    <div class="philo-card buffett">
+      <h3><span class="num">4</span> 不可替代的资产</h3>
+      <p>BNSF铁路："你不可能在21世纪再建一条横跨美国的铁路。"这不是成长型投资——是物理不可复制的垄断。</p>
+      <div class="quote">"如果给你1000亿美元，你能再造一个可口可乐吗？"</div>
+    </div>
+    <div class="philo-card buffett">
+      <h3><span class="num">5</span> 逆向思维</h3>
+      <p>芒格的核心贡献。"如果我知道我会死在哪里，我就永远不去那里。"先想怎么死，再想怎么活。</p>
+      <div class="quote">"反过来想，总是反过来想。" — 芒格</div>
+    </div>
+    <div class="philo-card buffett">
+      <h3><span class="num">6</span> 三次进化</h3>
+      <p>格雷厄姆（捡烟蒂）→ 喜诗糖果（用合理价格买伟大公司）→ 苹果（生态系统护城河的最高形态）。一个不断超越自己的人。</p>
     </div>
   </div>
-</section>
 
-</main>
+  <div class="section-title"><span>📖</span> 四大经典案例</div>
+  <div class="case-grid" style="max-width:1100px;margin:0 auto 40px;padding:0 24px;">
+    <div class="case-card"><div class="case-header"><span class="case-name">GEICO</span><span class="case-return win">帝国燃料</span></div><p class="case-lesson">$45.7M→$2.3B收购。浮存金引擎=永久性负成本资金。不是一笔投资，是整个帝国的燃料。</p></div>
+    <div class="case-card"><div class="case-header"><span class="case-name">可口可乐 1988</span><span class="case-return win">36年不卖</span></div><p class="case-lesson">$1.02B投入，占净资产30%。2026年每年分红$7.76亿。品牌护城河的极致——在几十亿人脑子里占了一个位置。</p></div>
+    <div class="case-card"><div class="case-header"><span class="case-name">BNSF铁路 2009</span><span class="case-return win">基础设施垄断</span></div><p class="case-lesson">$26B收购。"你没法再建一条横跨美国的铁路。"物理不可复制的极端案例。</p></div>
+    <div class="case-card"><div class="case-header"><span class="case-name">苹果 2016-2026</span><span class="case-return win">最大仓位</span></div><p class="case-lesson">从消费品角度看科技公司。iOS生态的锁定效应比任何品牌护城河都宽。这是巴菲特进化的终点。</p></div>
+    <div class="case-card"><div class="case-header"><span class="case-name">喜诗糖果 1972</span><span class="case-return win">哲学革命</span></div><p class="case-lesson">$25M收购（3x账面价值）。教会巴菲特：品牌=护城河、定价权>低估值、轻资产>重资产。没有喜诗，就没有后来的可口可乐。</p></div>
+    <div class="case-card"><div class="case-header"><span class="case-name">Dexter鞋业 1993</span><span class="case-return lose">$443M归零</span></div><p class="case-lesson">用伯克希尔股票支付（最终损失$8B+机会成本）。"最糟糕的投资"——证明了护城河不是永久性的。</p></div>
+  </div>
 
-<!-- ═══════ #7 D3 哲学关系图 ═══════ -->
-<section class="d3-section reveal">
-  <h2>🌐 投资哲学关系图谱</h2>
-  <p style="text-align:center;color:var(--text2);margin-bottom:20px;font-size:.85rem">
-    拖拽节点 · 滚轮缩放 · 点击查看详情 · 三大哲学如何融合为决策体系
-  </p>
-  <div id="philoGraph"></div>
-</section>
+  <div style="max-width:900px;margin:0 auto 40px;padding:0 24px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;">
+    <h3 style="margin-bottom:16px;">🏛️ 芒格：那个改变了巴菲特的人</h3>
+    <p style="color:var(--text2);">"<em>查理把我从猩猩进化到人类的速度大大加快。</em>" — 巴菲特</p>
+    <p style="color:var(--text2);margin-top:12px;">格雷厄姆教了安全边际，费雪教了好公司值得溢价——但巴菲特当时听不懂。芒格把费雪翻译成了巴菲特能听懂的版本。1972年的喜诗糖果是这场哲学革命的战场：$25M买一家账面价值$8M的公司，对格雷厄姆信徒来说这是异端。但喜诗证明了——伟大的生意配得上合理的价格。</p>
+  </div>
+</div>
 
-<!-- ═══════ BACK TO TOP ═══════ -->
-<button id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="回到顶部">↑</button>
+<!-- Tab: Son Masayoshi -->
+<div class="tab-content" id="tab-son">
+  <div class="philo-grid">
+    <div class="philo-card son">
+      <h3><span class="num">1</span> 300年视野</h3>
+      <p>孙正义的决策框架跨越30-300年。他不是在赌下一个季度——他在赌人类文明的演化方向。</p>
+      <div class="quote">"我投资的是三百年后的人类文明。"</div>
+    </div>
+    <div class="philo-card son">
+      <h3><span class="num">2</span> 模式识别</h3>
+      <p>6分钟决定投阿里$20M——不是冲动，是在雅虎身上学到的模式：会讲故事的创始人+正在形成的巨大市场。</p>
+      <div class="quote">"我看到马云的眼睛，里面有火焰。"</div>
+    </div>
+    <div class="philo-card son">
+      <h3><span class="num">3</span> 不对称押注</h3>
+      <p>核心逻辑：每个投资的下行有限（最多亏100%），但上行无限（可能赚1000x）。用极少数大赢家覆盖所有失败。</p>
+      <div class="quote">"群星中的一颗就能照亮夜空。"</div>
+    </div>
+    <div class="philo-card son">
+      <h3><span class="num">4</span> 集群战略</h3>
+      <p>不是投一个公司——是投一个集群。AI时代：ARM（芯片架构）+ OpenAI（模型）+ Stargate（算力）+ 法国数据中心（基础设施）。</p>
+    </div>
+    <div class="philo-card son">
+      <h3><span class="num">5</span> 失败是燃料</h3>
+      <p>WeWork $10B灰飞烟灭、Sprint巨亏、Vision Fund全线溃败。但孙正义不会因为这些失败就改变方法——他认为这是押注的代际趋势中不可避免的成本。</p>
+    </div>
+  </div>
 
-<footer>
-  <p>三大投资哲学 · 碰撞与融合 v2.0 | 设计系统: Dark Education | 增强: Semantic Tokens + Canvas Starfield + D3 Graph + Simulator + SEO</p>
-  <p>内容仅供学习讨论，不构成投资建议 · <a href="https://github.com/jasoneip01-pixel/next-nvidia">源码</a></p>
-</footer>
+  <div class="section-title"><span>📖</span> 三大胜利 × 三大败笔</div>
+  <div class="case-grid" style="max-width:1100px;margin:0 auto 40px;padding:0 24px;">
+    <div class="case-card"><div class="case-header"><span class="case-name">阿里巴巴 2000</span><span class="case-return win">1700x</span></div><p class="case-lesson">$20M 6分钟决定。与马云见面后立刻识别出Yahoo模式。史上最伟大单笔风投。</p></div>
+    <div class="case-card"><div class="case-header"><span class="case-name">ARM 2016-今</span><span class="case-return win">+$260B</span></div><p class="case-lesson">$31B收购时被嘲笑"疯了"。十年后ARM市值$310B。孙正义赌的是"每台智能设备都需要ARM"。</p></div>
+    <div class="case-card"><div class="case-header"><span class="case-name">OpenAI 2026</span><span class="case-return win">最新豪赌</span></div><p class="case-lesson">$64.6B入股11.75%。赌OpenAI IPO估值$4-5T。配套€75B法国数据中心+$500B Stargate。</p></div>
+    <div class="case-card"><div class="case-header"><span class="case-name">WeWork</span><span class="case-return lose">$10B+归零</span></div><p class="case-lesson">投了骗子。亚当·诺依曼不是创业者，是表演艺术家。根因：看人不准。</p></div>
+    <div class="case-card"><div class="case-header"><span class="case-name">Sprint 2013</span><span class="case-return lose">巨亏</span></div><p class="case-lesson">$21.6B收购。电信运营不是他的能力圈。能力圈之外的教训。</p></div>
+    <div class="case-card"><div class="case-header"><span class="case-name">Vision Fund</span><span class="case-return lose">¥1.9万亿亏损</span></div><p class="case-lesson">Uber/Didi/WeWork全线溃败。规模太大、估值太高、退出太慢。但孙正义学到了——规模本身就是敌人。</p></div>
+  </div>
+</div>
 
-<!-- ═══════════════════════════════════════
-     SCRIPTS
-     ═══════════════════════════════════════ -->
+<!-- Interactive Simulator -->
+<div class="sim reveal">
+  <h2>🧪 三师会诊</h2>
+  <p class="sim-sub">输入任意标的，看三位投资大师会如何决策</p>
+  <input type="text" id="simInput" placeholder="输入标的名称... 例：英伟达、茅台、SpaceX...">
+  <button class="sim-btn" onclick="runSim()">🔍 开始会诊</button>
+  <div class="sim-result" id="simResult">
+    <div class="verdict" id="simVerdict"></div>
+    <div class="breakdown" id="simBreakdown"></div>
+  </div>
+</div>
+
+<!-- Key Insights -->
+<div class="insights reveal">
+  <h2>💡 核心洞察</h2>
+  <div class="insight-grid">
+    <div class="insight-card">
+      <h3>🔗 三人共享的基石</h3>
+      <p>买股票=买公司。这个原则是三人都反复强调的——不是交易符号，是生意所有权。</p>
+    </div>
+    <div class="insight-card">
+      <h3>⚔️ 三人最大的分歧</h3>
+      <p>段永平和巴菲特要求护城河已经建立。孙正义愿意在护城河形成之前押注——这是最根本的方法论差异。</p>
+    </div>
+    <div class="insight-card">
+      <h3>🧬 互补关系</h3>
+      <p>段永平管"不做什么"（护城河过滤）、巴菲特管"怎么做"（安全边际+浮存金）、孙正义管"方向在哪"（代际趋势）。</p>
+    </div>
+    <div class="insight-card">
+      <h3>⚠️ 三人的共同盲区</h3>
+      <p>都对创始人风险敏感度不够。段永平弃阿里（Musk治理red flag）、巴菲特的Dexter、孙正义的WeWork——都在"看人"上出过事。</p>
+    </div>
+    <div class="insight-card">
+      <h3>📐 Ariste框架的形成</h3>
+      <p>七层漏斗 = 段永平的四层 + 孙正义的趋势验证 + 巴菲特/芒格的现金流/逆向/安全边际。顺序不可颠倒。</p>
+    </div>
+    <div class="insight-card">
+      <h3>🦞 最终答案</h3>
+      <p>三者融合后的框架同时回答了三个问题：这是什么？（段永平·护城河）、去哪？（孙正义·趋势）、值不值？（巴菲特·安全边际）。</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>Ariste 投资框架 v2.0 · 2026-06-05</p>
+  <p style="margin-top:8px;">段永平 · 巴菲特&芒格 · 孙正义 — 三条通往真理的不同路径</p>
+</div>
+
 <script>
-/* ═══════ #5 CANVAS STARFIELD ═══════ */
+function switchTab(name) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(el => {
+    if (el.classList.contains(name) || (name==='all' && el.classList.contains('all'))) {
+      el.classList.add('active', name);
+    }
+  });
+  window.scrollTo({top: document.querySelector('.tabs-nav').offsetTop - 100, behavior:'smooth'});
+}
+
+const simData = {
+  '英伟达': {duan:{signal:'buy',reason:'苹果式的生态系统护城河——CUDA锁定开发者。①通过。'},buffett:{signal:'hold',reason:'护城河极宽但超出能力圈。会欣赏但不会投——50年不碰科技股的纪律。'},son:{signal:'buy',reason:'正在发生。AI时代的"数字石油"——每一台AI服务器都需要。ARM+OpenAI集群的核心。'}},
+  '茅台': {duan:{signal:'buy',reason:'存货越陈越值钱。品牌在十几亿人脑子里。①④都通过。'},buffett:{signal:'buy',reason:'像可口可乐——品牌护城河在文化里。如果他能理解中国市场。'},son:{signal:'hold',reason:'消费品牌很好，但不是代际更替级别的趋势。不会重仓。'}},
+  'SpaceX': {duan:{signal:'sell',reason:'①混了零护城河AI段③整体烧钱⑦零安全边际。如果只有Starlink——A+级。'},buffett:{signal:'sell',reason:'⑤超出能力圈④治理全面red flag（controlled company, Musk绝对控制）。'},son:{signal:'buy',reason:'代际更替级别：Starship→卫星互联网→轨道AI→月球经济。这是300年尺度的事。'}},
+  '可口可乐': {duan:{signal:'buy',reason:'品牌护城河极致。"给你$100B你也打不败可口可乐"。'},buffett:{signal:'buy',reason:'36年从未卖过一股。护城河和分红都无可挑剔。'},son:{signal:'hold',reason:'稳态生意，不是颠覆性趋势。好公司但不是他的菜。'}},
+  '阿里巴巴': {duan:{signal:'sell',reason:'2026已清仓。"护城河裂了"——拼多多+抖音侵蚀。'},buffett:{signal:'sell',reason:'从来不投中国科技股——能力圈之外。'},son:{signal:'hold',reason:'从"史上最伟大投资"到逐步退出。趋势变了——电商不再是增量市场。'}},
+  '特斯拉': {duan:{signal:'sell',reason:'Musk单人依赖+汽车是重资产烧钱生意。①不通过。'},buffett:{signal:'sell',reason:'汽车制造不是护城河生意——任何人有足够资本都能建车厂。'},son:{signal:'buy',reason:'不是汽车公司——是AI机器人+能源+自动驾驶。代际更替级别的赌注。'}},
+};
+
+function runSim() {
+  const input = document.getElementById('simInput').value.trim();
+  const resultDiv = document.getElementById('simResult');
+  const verdict = document.getElementById('simVerdict');
+  const breakdown = document.getElementById('simBreakdown');
+  
+  let data = simData[input];
+  if (!data) {
+    // Generic fallback
+    data = {
+      duan: {signal:'hold',reason:'需要深入分析护城河。段永平会先问：这是好生意吗？护城河在哪？'},
+      buffett:{signal:'hold',reason:'需要判断是否在能力圈内、是否有安全边际。巴菲特会先读十年年报。'},
+      son:{signal:'hold',reason:'需要判断这是否是代际更替级别的趋势。孙正义会问：这改变世界吗？'}
+    };
+  }
+  
+  const signals = {buy:1, hold:0, sell:-1};
+  const totalSignal = signals[data.duan.signal] + signals[data.buffett.signal] + signals[data.son.signal];
+  
+  let verdictText = '';
+  if (totalSignal >= 2) verdictText = '🟢 <strong>共识：买入</strong> — 至少两位大师会建仓';
+  else if (totalSignal <= -2) verdictText = '🔴 <strong>共识：不买</strong> — 至少两位大师会回避';
+  else if (totalSignal === 0 && data.duan.signal === 'hold') verdictText = '⚪ <strong>分歧</strong> — 三位都需要更多信息才能决策';
+  else verdictText = '🟡 <strong>严重分歧</strong> — 一位坚定买入、另一位坚定回避';
+  
+  verdict.innerHTML = verdictText;
+  
+  const sigEmoji = {buy:'🟢 买入', hold:'⚪ 观望', sell:'🔴 不买'};
+  const sigClass = {buy:'buy', hold:'hold', sell:'sell'};
+  
+  breakdown.innerHTML = `
+    <div class="row">
+      <span class="investor" style="color:var(--duan)">🏔️ 段永平</span>
+      <span class="signal ${sigClass[data.duan.signal]}">${sigEmoji[data.duan.signal]}</span>
+      <span style="color:var(--text2);font-size:13px;flex:1;margin-left:12px;">${data.duan.reason}</span>
+    </div>
+    <div class="row">
+      <span class="investor" style="color:var(--nvda)">🏛️ 巴菲特</span>
+      <span class="signal ${sigClass[data.buffett.signal]}">${sigEmoji[data.buffett.signal]}</span>
+      <span style="color:var(--text2);font-size:13px;flex:1;margin-left:12px;">${data.buffett.reason}</span>
+    </div>
+    <div class="row">
+      <span class="investor" style="color:var(--gold)">🚀 孙正义</span>
+      <span class="signal ${sigClass[data.son.signal]}">${sigEmoji[data.son.signal]}</span>
+      <span style="color:var(--text2);font-size:13px;flex:1;margin-left:12px;">${data.son.reason}</span>
+    </div>
+  `;
+  
+  resultDiv.classList.add('revealed');
+  resultDiv.style.display = 'block';
+  resultDiv.scrollIntoView({behavior:'smooth'});
+}
+
+// ── Starfield Canvas ──────────────────────────────────────
 (function(){
-  var c=document.getElementById('starfield'),ctx=c.getContext('2d');
-  var W,H,stars=[];
-  function resize(){
-    W=c.width=window.innerWidth;H=c.height=window.innerHeight;
+  const c = document.getElementById('starfield');
+  const ctx = c.getContext('2d');
+  let w, h, stars = [];
+  const colors = [
+    {r:0,d:212,g:255,b:255},   // Duan - cyan
+    {r:118,g:185,b:0},          // Buffett - green
+    {r:240,g:192,b:64},         // Son - gold
+  ];
+
+  function resize() {
+    w = c.width = window.innerWidth;
+    h = c.height = window.innerHeight;
   }
-  resize();window.addEventListener('resize',resize);
-  for(var i=0;i<180;i++){
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Init stars: 3 master stars + ~60 background stars
+  stars = colors.map((col,i) => ({
+    x: w*(0.22 + i*0.28), y: h*(0.30 + (i%2)*0.25),
+    r: 2.2 + Math.random()*0.6, vx:0.04-Math.random()*0.08, vy:0.04-Math.random()*0.08,
+    master:true, color:col
+  }));
+  for (let i=0; i<60; i++) {
     stars.push({
-      x:Math.random()*2000,y:Math.random()*2000,r:.3+Math.random()*1.8,
-      a:.2+Math.random()*.6,v:.002+Math.random()*.008,
-      hue:['#b0b0c8','#7878a0','#8b5cf6','#06b6d4'][Math.floor(Math.random()*4)]
+      x: Math.random()*w, y: Math.random()*h,
+      r: 0.3 + Math.random()*0.9, vx:0.02-Math.random()*0.04, vy:0.02-Math.random()*0.04,
+      master:false
     });
   }
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    stars.forEach(function(s){
-      s.a+=s.v;if(s.a>1||s.a<.2)s.v*=-1;
-      ctx.globalAlpha=s.a;
-      ctx.fillStyle=s.hue;ctx.beginPath();
-      ctx.arc(s.x%W,s.y%H,s.r,0,Math.PI*2);ctx.fill();
+
+  function draw() {
+    ctx.clearRect(0,0,w,h);
+
+    // Connection lines between master stars
+    const masters = stars.filter(s=>s.master);
+    for (let i=0; i<masters.length; i++) {
+      for (let j=i+1; j<masters.length; j++) {
+        ctx.beginPath();
+        ctx.moveTo(masters[i].x, masters[i].y);
+        ctx.lineTo(masters[j].x, masters[j].y);
+        ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+
+    stars.forEach(s => {
+      s.x = (s.x + s.vx + w) % w;
+      s.y = (s.y + s.vy + h) % h;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      if (s.master) {
+        const pulse = 0.5 + 0.5 * Math.sin(Date.now()*0.001 + stars.indexOf(s));
+        ctx.fillStyle = `rgba(${s.color.r},${s.color.g},${s.color.b},${0.25 + pulse*0.25})`;
+        ctx.shadowColor = `rgba(${s.color.r},${s.color.g},${s.color.b},${0.3 + pulse*0.3})`;
+        ctx.shadowBlur = 12 + pulse*8;
+      } else {
+        ctx.fillStyle = 'rgba(255,255,255,0.06)';
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+      }
+      ctx.fill();
     });
+    ctx.shadowBlur = 0;
     requestAnimationFrame(draw);
   }
   draw();
-  window.addEventListener('resize',function(){
-    resize();stars.forEach(function(s){s.x=Math.random()*W;s.y=Math.random()*H;});
-  });
 })();
 
-/* ═══════ #8 TAB SWITCHING WITH KEYBOARD ═══════ */
-var currentTab=0;
-var tabBtns=document.querySelectorAll('.tab-btn[role="tab"]');
-var tabPanels=document.querySelectorAll('.tab-content[role="tabpanel"]');
+// ── Scroll Reveal ────────────────────────────────────────
+(function(){
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+})();
 
-function switchTab(idx){
-  currentTab=idx;
-  tabBtns.forEach(function(b,i){b.classList.toggle('active',i===idx);b.setAttribute('aria-selected',i===idx?'true':'false')});
-  tabPanels.forEach(function(p,i){p.classList.toggle('active',i===idx)});
-  // #10 localStorage
-  try{localStorage.setItem('three-pillars-tab',idx)}catch(e){}
-}
-
-tabBtns.forEach(function(btn){
-  btn.addEventListener('click',function(){switchTab(parseInt(this.dataset.tab))});
-});
-// Keyboard left/right for tabs
-document.addEventListener('keydown',function(e){
-  if(document.activeElement&&document.activeElement.closest('.tabs-nav')){
-    if(e.key==='ArrowRight'){e.preventDefault();switchTab(Math.min(currentTab+1,tabBtns.length-1));tabBtns[currentTab].focus()}
-    if(e.key==='ArrowLeft'){e.preventDefault();switchTab(Math.max(currentTab-1,0));tabBtns[currentTab].focus()}
-  }
+// ── Reset simulator result on new input ─────────────────
+document.getElementById('simInput').addEventListener('input', function(){
+  const r = document.getElementById('simResult');
+  r.classList.remove('revealed');
+  r.style.display = 'none';
 });
 
-/* ═══════ #10 RESTORE TAB ═══════ */
-try{var savedTab=parseInt(localStorage.getItem('three-pillars-tab'));if(savedTab>=0)switchTab(savedTab)}catch(e){}
-
-/* ═══════ SCROLL REVEAL ═══════ */
-(function(){
-  var obs=new IntersectionObserver(function(entries){
-    entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible')});
-  },{threshold:.15});
-  document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)});
-})();
-
-/* ═══════ BACK TO TOP ═══════ */
-(function(){
-  var btn=document.getElementById('backTop');
-  window.addEventListener('scroll',function(){
-    btn.classList.toggle('visible',window.scrollY>400);
-  });
-})();
-
-/* ═══════ #6 SIMULATOR + CONFETTI ═══════ */
-function spawnConfetti(x,y,count){
-  var colors=['#00d4ff','#76b900','#f0c040','#8b5cf6','#06b6d4','#ec4899'];
-  for(var i=0;i<count;i++){
-    var el=document.createElement('div');
-    el.className='confetti-piece';
-    el.style.left=x+'px';el.style.top=y+'px';
-    el.style.width=(4+Math.random()*8)+'px';el.style.height=(4+Math.random()*8)+'px';
-    el.style.background=colors[Math.floor(Math.random()*colors.length)];
-    el.style.borderRadius=Math.random()>.5?'50%':'2px';
-    el.style.transform='translate('+(Math.random()*200-100)+'px,'+(Math.random()*-400-100)+'px) rotate('+(Math.random()*360)+'deg)';
-    el.style.animationDuration=(.8+Math.random()*1.2)+'s';
-    document.body.appendChild(el);
-    setTimeout(function(){el.remove()},2000);
-  }
-}
-
-var simResults=[];
-
-function runSimulator(){
-  var company=document.getElementById('simCompany').value.trim();
-  if(!company)return;
-
-  // Simulate three investors' judgment (deterministic based on company name hash)
-  var hash=0;for(var i=0;i<company.length;i++)hash=((hash<<5)-hash)+company.charCodeAt(i);
-  var scores=[
-    {name:'段永平',verdict:hash%7>2?'buy':hash%7>0?'wait':'skip',reason:hash%7>2?'能力圈内，好生意看得懂':hash%7>0?'需要更深的认知':'不在能力圈内'},
-    {name:'巴菲特',verdict:hash%5>1?'buy':hash%5>0?'wait':'skip',reason:hash%5>1?'护城河可识别，安全边际充足':hash%5>0?'等待更好的价格':'护城河不够宽'},
-    {name:'孙正义',verdict:hash%6>1?'buy':hash%6>0?'wait':'skip',reason:hash%6>1?'处于科技变革主航道':hash%6>0?'值得跟踪但时机未到':'不在范式转移路径上'}
-  ];
-
-  var buyCount=scores.filter(function(s){return s.verdict==='buy'}).length;
-
-  // Build HTML
-  var html='<div class="verdict" style="color:'+(buyCount>=2?'var(--success)':buyCount>=1?'var(--warning)':'var(--destructive)')+'">';
-  html+=buyCount>=2?'✅ 多数看多 — '+buyCount+'/3 大师看好「'+company+'」';
-  html+=buyCount===1?'⚡ 意见分歧 — 仅 1/3 大师看好「'+company+'」';
-  html+=buyCount===0?'❌ 全体回避 — 0/3 大师看好「'+company+'」';
-  html+='</div><div class="breakdown">';
-
-  scores.forEach(function(s){
-    html+='<div class="row"><span class="investor">'+s.name+'</span>';
-    html+='<span class="signal signal-'+(s.verdict==='buy'?'buy':s.verdict==='wait'?'wait':'skip')+'">';
-    html+=s.verdict==='buy'?'🟢 买入':s.verdict==='wait'?'🟡 等待':'🔴 跳过';
-    html+='</span><span style="font-size:13px;color:var(--text2);margin-left:auto">'+s.reason+'</span></div>';
-  });
-  html+='</div>';
-
-  document.getElementById('simResult').innerHTML=html;
-  document.getElementById('simResult').classList.add('revealed');
-  document.getElementById('simResult').style.display='block';
-
-  // Confetti if majority bullish
-  if(buyCount>=2){
-    var btn=document.getElementById('simBtn');
-    var rect=btn.getBoundingClientRect();
-    spawnConfetti(rect.left+rect.width/2,rect.top,50);
-  }
-
-  // #10 localStorage history
-  simResults.unshift({company:company,scores:scores,time:new Date().toLocaleString('zh-CN')});
-  if(simResults.length>10)simResults=simResults.slice(0,10);
-  try{localStorage.setItem('three-pillars-sim',JSON.stringify(simResults))}catch(e){}
-  renderHistory();
-}
-
-function renderHistory(){
-  var list=document.getElementById('simHistoryList');
-  var container=document.getElementById('simHistory');
-  if(simResults.length===0){container.style.display='none';return}
-  container.style.display='';
-  var html='';
-  simResults.forEach(function(r,i){
-    var buys=r.scores.filter(function(s){return s.verdict==='buy'}).length;
-    html+='<div class="sim-history-item"><span>'+r.company+' — '+(buys>=2?'🟢':buys>=1?'🟡':'🔴')+' '+buys+'/3</span><span style="color:var(--muted)">'+r.time+'</span></div>';
-  });
-  list.innerHTML=html;
-}
-
-function clearHistory(){
-  simResults=[];
-  try{localStorage.removeItem('three-pillars-sim')}catch(e){}
-  renderHistory();
-}
-
-// #10 Restore sim history
-try{var saved=JSON.parse(localStorage.getItem('three-pillars-sim'));if(saved&&saved.length)simResults=saved;renderHistory()}catch(e){}
-
-document.getElementById('simCompany').addEventListener('keydown',function(e){
-  if(e.key==='Enter')runSimulator();
+// ── Tab button keyboard nav ──────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.setAttribute('tabindex','0');
+  btn.addEventListener('keydown', e => { if (e.key==='Enter') btn.click(); });
 });
 
-/* ═══════ #7 D3 PHILOSOPHY RELATIONSHIP GRAPH ═══════ */
-document.addEventListener('DOMContentLoaded',function(){
-if(typeof d3==='undefined'){document.getElementById('philoGraph').innerHTML='<p style="text-align:center;padding:40px;color:var(--muted)">⚠️ 图谱引擎加载中... 如持续未显示，请刷新页面</p>';return}
-(function(){
-  var container=document.getElementById('philoGraph');
-  var W=container.clientWidth,H=500;
-  if(W<640)H=380;
-
-  var nodes=[
-    {id:'duan',group:'person',label:'段永平',size:16,color:'#00d4ff'},
-    {id:'buffett',group:'person',label:'巴菲特',size:16,color:'#76b900'},
-    {id:'son',group:'person',label:'孙正义',size:16,color:'#f0c040'},
-    {id:'circle',group:'concept',label:'能力圈',size:11,color:'#a78bfa'},
-    {id:'moat',group:'concept',label:'护城河',size:11,color:'#a78bfa'},
-    {id:'timemachine',group:'concept',label:'时光机',size:11,color:'#a78bfa'},
-    {id:'margin',group:'concept',label:'安全边际',size:10,color:'#a78bfa'},
-    {id:'compound',group:'concept',label:'长期复利',size:10,color:'#a78bfa'},
-    {id:'vision',group:'concept',label:'300年愿景',size:10,color:'#a78bfa'},
-    {id:'bet',group:'concept',label:'集中押注',size:9,color:'#a78bfa'},
-    {id:'dcf',group:'method',label:'DCF估值',size:9,color:'#06b6d4'},
-    {id:'kelly',group:'method',label:'凯利公式',size:9,color:'#06b6d4'},
-    {id:'funnel',group:'method',label:'决策漏斗',size:12,color:'#ec4899'},
-    {id:'aapl',group:'case',label:'苹果',size:8,color:'#f59e0b'},
-    {id:'byd',group:'case',label:'比亚迪',size:8,color:'#f59e0b'},
-    {id:'arm',group:'case',label:'ARM',size:8,color:'#f59e0b'},
-    {id:'ntes',group:'case',label:'网易',size:8,color:'#f59e0b'}
-  ];
-
-  var links=[
-    {source:'duan',target:'circle',label:'核心原则'},
-    {source:'duan',target:'margin',label:'坚守'},
-    {source:'duan',target:'compound',label:'践行'},
-    {source:'buffett',target:'moat',label:'核心原则'},
-    {source:'buffett',target:'margin',label:'发明者'},
-    {source:'buffett',target:'compound',label:'终极信仰'},
-    {source:'son',target:'timemachine',label:'核心理论'},
-    {source:'son',target:'vision',label:'时间框架'},
-    {source:'son',target:'bet',label:'实践方式'},
-    {source:'duan',target:'buffett',label:'师从'},
-    {source:'circle',target:'moat',label:'互补'},
-    {source:'timemachine',target:'circle',label:'超越边界'},
-    {source:'margin',target:'bet',label:'约束'},
-    {source:'dcf',target:'margin',label:'量化'},
-    {source:'kelly',target:'bet',label:'优化'},
-    {source:'funnel',target:'timemachine',label:'第一层'},
-    {source:'funnel',target:'moat',label:'第二层'},
-    {source:'funnel',target:'circle',label:'第三层'},
-    {source:'funnel',target:'dcf',label:'第四层'},
-    {source:'funnel',target:'kelly',label:'第六层'},
-    {source:'duan',target:'aapl',label:'重仓'},
-    {source:'duan',target:'ntes',label:'100×'},
-    {source:'buffett',target:'aapl',label:'第一大持仓'},
-    {source:'buffett',target:'byd',label:'30×'},
-    {source:'son',target:'arm',label:'核心资产'}
-  ];
-
-  var svg=d3.select('#philoGraph').append('svg').attr('viewBox',[0,0,W,H]);
-  var g=svg.append('g');
-  svg.call(d3.zoom().scaleExtent([.3,4]).on('zoom',function(e){g.attr('transform',e.transform)}));
-
-  var sim=d3.forceSimulation(nodes)
-    .force('link',d3.forceLink(links).id(function(d){return d.id}).distance(100))
-    .force('charge',d3.forceManyBody().strength(-250))
-    .force('center',d3.forceCenter(W/2,H/2))
-    .force('collision',d3.forceCollide().radius(function(d){return d.size+6}));
-
-  var link=g.append('g').selectAll('line').data(links).join('line')
-    .attr('stroke','#3a3a5a').attr('stroke-width',1.2).attr('stroke-opacity',.5);
-
-  var linkLabel=g.append('g').selectAll('text').data(links).join('text')
-    .text(function(d){return d.label}).attr('font-size',8).attr('fill','#7878a0')
-    .attr('text-anchor','middle').attr('dy',-4);
-
-  var node=g.append('g').selectAll('g').data(nodes).join('g')
-    .call(d3.drag().on('start',function(e,d){if(!e.active)sim.alphaTarget(.3).restart();d.fx=d.x;d.fy=d.y})
-      .on('drag',function(e,d){d.fx=e.x;d.fy=e.y})
-      .on('end',function(e,d){if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null}))
-    .on('click',function(e,d){
-      e.stopPropagation();
-      node.select('circle').attr('opacity',function(n){return n.group===d.group||n.id===d.id?1:.15});
-    });
-
-  node.append('circle').attr('r',function(d){return d.size})
-    .attr('fill',function(d){return d.color}).attr('stroke','#1a1a28').attr('stroke-width',2)
-    .style('cursor','pointer');
-
-  node.append('text').text(function(d){return d.label})
-    .attr('font-size',function(d){return Math.max(8,d.size*.65)})
-    .attr('fill','#e0e0ee').attr('text-anchor','middle')
-    .attr('dy',function(d){return d.size+12}).style('pointer-events','none');
-
-  svg.on('click',function(){
-    node.select('circle').attr('opacity',1);
-  });
-
-  sim.on('tick',function(){
-    link.attr('x1',function(d){return d.source.x}).attr('y1',function(d){return d.source.y})
-        .attr('x2',function(d){return d.target.x}).attr('y2',function(d){return d.target.y});
-    linkLabel.attr('x',function(d){return (d.source.x+d.target.x)/2})
-             .attr('y',function(d){return (d.source.y+d.target.y)/2});
-    node.attr('transform',function(d){return'translate('+d.x+','+d.y+')'});
-  });
-
-  window.addEventListener('resize',function(){
-    W=container.clientWidth;H=W<640?380:500;
-    svg.attr('viewBox',[0,0,W,H]);
-    sim.force('center',d3.forceCenter(W/2,H/2)).alpha(.3).restart();
-  });
-})();
-}); // DOMContentLoaded guard
+// ── Simulator Enter key ──────────────────────────────────
+document.getElementById('simInput').addEventListener('keydown', function(e){
+  if (e.key === 'Enter') runSim();
+});
 </script>
-
 </body>
 </html>
